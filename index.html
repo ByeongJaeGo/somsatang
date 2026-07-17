@@ -285,35 +285,62 @@
     }
 
     .share {
-      margin-top: 20px;
-      padding: 16px 18px;
-      background: rgba(255, 255, 255, 0.65);
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      margin: 22px 0 26px;
+      padding: 20px 18px 18px;
+      background: linear-gradient(135deg, rgba(244, 184, 200, 0.35), rgba(168, 212, 230, 0.35));
+      border: 2px solid rgba(196, 90, 122, 0.35);
+      border-radius: 16px;
       text-align: center;
+      box-shadow: 0 8px 32px rgba(196, 90, 122, 0.18);
+      animation: sharePulse 3s ease-in-out infinite;
+    }
+
+    .share__badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(135deg, #d46b8a, #6a9bbb);
+      border-radius: 999px;
+      padding: 5px 12px;
+      margin-bottom: 12px;
     }
 
     .share__text {
-      font-size: 0.9rem;
-      font-weight: 400;
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 4vw, 1.2rem);
+      font-weight: 500;
       color: var(--ink);
-      line-height: 1.55;
-      margin-bottom: 12px;
+      line-height: 1.5;
+      margin-bottom: 14px;
     }
 
     .share__link {
       display: block;
-      font-size: 0.88rem;
-      color: #5a8fad;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #c45a7a;
       word-break: break-all;
       text-decoration: none;
-      padding: 10px 12px;
-      background: rgba(168, 212, 230, 0.2);
-      border-radius: 10px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px dashed rgba(196, 90, 122, 0.45);
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .share__link:hover {
-      text-decoration: underline;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(196, 90, 122, 0.15);
+    }
+
+    .share__hint {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 300;
     }
 
     .field {
@@ -537,6 +564,11 @@
       }
     }
 
+    @keyframes sharePulse {
+      0%, 100% { box-shadow: 0 8px 32px rgba(196, 90, 122, 0.18); }
+      50% { box-shadow: 0 12px 40px rgba(196, 90, 122, 0.28); }
+    }
+
     @keyframes shimmer {
       0%, 100% { background-position: 0% center; }
       50% { background-position: 100% center; }
@@ -595,6 +627,13 @@
           </ul>
         </p>
 
+        <div class="share">
+          <span class="share__badge">친구에게 알려주기</span>
+          <p class="share__text">내 사이트 링크 사이트에 넣고<br />친구에게 공유하세요!</p>
+          <a class="share__link" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
+          <p class="share__hint">링크를 눌러 복사하거나 공유해 보세요</p>
+        </div>
+
         <form id="form-register" novalidate>
           <div class="field">
             <label for="email">이메일</label>
@@ -606,11 +645,6 @@
           </div>
           <button type="submit" class="btn btn--primary">등록하기</button>
         </form>
-
-        <div class="share">
-          <p class="share__text">내 사이트 링크 사이트에 넣고 친구에게 공유하세요!</p>
-          <a class="share__link" id="site-link-register" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
-        </div>
       </section>
 
       <!-- 완료 -->
@@ -623,8 +657,10 @@
           <p>서비스 출시 시 알림을 보내드리고,<br />사전 등록 이벤트 추첨 대상에 포함됐어요.</p>
           <dl class="summary" id="summary"></dl>
           <div class="share">
-            <p class="share__text">내 사이트 링크 사이트에 넣고 친구에게 공유하세요!</p>
-            <a class="share__link" id="site-link-done" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
+            <span class="share__badge">친구에게 알려주기</span>
+            <p class="share__text">내 사이트 링크 사이트에 넣고<br />친구에게 공유하세요!</p>
+            <a class="share__link" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
+            <p class="share__hint">링크를 눌러 복사하거나 공유해 보세요</p>
           </div>
           <button type="button" class="btn btn--primary" id="restart">다시 등록하기</button>
         </div>
