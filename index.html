@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>somsatang — 부담 없는 생일 선물</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c2430;
+      --ink-soft: #4a5568;
+      --blush: #f4b8c8;
+      --sky: #a8d4e6;
+      --mint: #b8e0d2;
+      --cream: #fff9fc;
+      --line: rgba(28, 36, 48, 0.08);
+      --shadow: 0 24px 60px rgba(80, 60, 90, 0.12);
+      --radius: 20px;
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Outfit", "Apple SD Gothic Neo", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 10% 0%, rgba(244, 184, 200, 0.45), transparent 55%),
+        radial-gradient(ellipse 70% 45% at 90% 10%, rgba(168, 212, 230, 0.4), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(184, 224, 210, 0.35), transparent 55%),
+        linear-gradient(165deg, #faf6f9 0%, #f0f5f8 45%, #f5f2f7 100%);
+      background-attachment: fixed;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px 20px 32px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main {
+      flex: 1;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 36px;
+      animation: rise 0.8s ease both;
+    }
+
+    .brand__mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--sky));
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(244, 184, 200, 0.45);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .brand__mark span {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--cream);
+      opacity: 0.9;
+    }
+
+    .brand__name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 8vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(120deg, #c45a7a 0%, #5a8fad 55%, #5a9a88 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .brand__tag {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--ink-soft);
+    }
+
+    .pains {
+      margin-top: 28px;
+      text-align: left;
+    }
+
+    .pains__intro {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .pain-item {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .pain-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .pain-item blockquote {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      border-left: 3px solid var(--blush);
+      padding-left: 12px;
+      margin: 0 0 10px;
+      font-style: normal;
+    }
+
+    .pain-item__answer {
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .pain-item__answer strong {
+      color: #c45a7a;
+      font-weight: 500;
+    }
+
+    .pains__closing {
+      margin-top: 18px;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .panel {
+      display: none;
+      background: rgba(255, 249, 252, 0.72);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius);
+      padding: 28px 24px 32px;
+      box-shadow: var(--shadow);
+      animation: rise 0.55s ease both;
+    }
+
+    .panel.is-active {
+      display: block;
+    }
+
+    .panel__title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .panel__desc {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .notice {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      margin-bottom: 22px;
+      padding: 12px 14px;
+      background: rgba(168, 212, 230, 0.22);
+      border-radius: 12px;
+      line-height: 1.55;
+    }
+
+    .notice strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .notice--event {
+      margin-top: 10px;
+      background: rgba(244, 184, 200, 0.18);
+    }
+
+    .event-detail {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(28, 36, 48, 0.12);
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .event-detail li {
+      margin-left: 1em;
+      margin-bottom: 4px;
+    }
+
+    .event-detail li:last-child {
+      margin-bottom: 0;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field input:focus {
+      border-color: rgba(196, 90, 122, 0.45);
+      box-shadow: 0 0 0 3px rgba(244, 184, 200, 0.35);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn--primary {
+      margin-top: 8px;
+      background: linear-gradient(135deg, #d46b8a, #6a9bbb);
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(196, 90, 122, 0.28);
+    }
+
+    .btn--primary:hover {
+      box-shadow: 0 14px 32px rgba(196, 90, 122, 0.36);
+      transform: translateY(-1px);
+    }
+
+    .btn--ghost {
+      margin-top: 12px;
+      background: transparent;
+      color: var(--ink-soft);
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .btn--ghost:hover {
+      color: var(--ink);
+    }
+
+    .done {
+      text-align: center;
+      padding: 12px 0 8px;
+    }
+
+    .done__icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--mint));
+      display: grid;
+      place-items: center;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .done__icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .done h2 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .done p {
+      color: var(--ink-soft);
+      font-weight: 300;
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    .summary {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      border: 1px solid var(--line);
+    }
+
+    .summary dt {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-top: 12px;
+    }
+
+    .summary dt:first-child {
+      margin-top: 0;
+    }
+
+    .summary dd {
+      font-size: 1rem;
+      margin-top: 4px;
+    }
+
+    .beta {
+      margin-top: 40px;
+      padding-top: 20px;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .beta__badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+    }
+
+    .beta__note {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @media (min-width: 640px) {
+      .app {
+        padding-top: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <div class="app">
+    <div class="main">
+      <header class="brand">
+        <div class="brand__mark" aria-hidden="true"><span></span></div>
+        <h1 class="brand__name">somsatang</h1>
+        <p class="brand__tag">생일자와 선물자, 서로 부담 없는 생일</p>
+
+        <div class="pains">
+          <p class="pains__intro">이런 고민, 해본 적 있나요?</p>
+
+          <article class="pain-item">
+            <blockquote>"상대방이 내 선물을 받고 실망할까 봐(부정적 평가) 불안하다."</blockquote>
+            <p class="pain-item__answer">생일자가 <strong>받고 싶은 선물 3개</strong>를 미리 남겨요. 실망할 걱정 없이, 마음에 드는 걸 골라 줄 수 있어요.</p>
+          </article>
+
+          <article class="pain-item">
+            <blockquote>"상대가 내 예상보다 너무 비싸거나 싼 걸 줘서 상황이 내 통제를 벗어날까 봐 두렵다."</blockquote>
+            <p class="pain-item__answer">선물자는 <strong>1만원씩, 최대 3만원</strong>까지만 후원해요. 금액이 정해져 있어서 어색함 없이 부담 없이 참여할 수 있어요.</p>
+          </article>
+
+          <article class="pain-item">
+            <blockquote>"선물 고르는 데 머리 쓰기 귀찮고, 나중에 동일한 금액으로 갚아야 하는 빚(호혜성)이 피로하다."</blockquote>
+            <p class="pain-item__answer">목록에서 고르기만 하면 돼요. <strong>갚을 빚 없이</strong> 작은 마음을 전하는 선물 문화, somsatang이 만들어 갈게요.</p>
+          </article>
+
+          <p class="pains__closing">somsatang이 이 부담들을 덜어드립니다.</p>
+        </div>
+      </header>
+
+      <!-- 등록 -->
+      <section id="panel-register" class="panel is-active" aria-labelledby="register-title">
+        <h2 id="register-title" class="panel__title">시작하기</h2>
+        <p class="panel__desc">이메일과 생일만 등록하면 돼요.</p>
+        <p class="notice">서비스가 정식 출시되면 등록하신 이메일로 <strong>출시 알림</strong>을 보내드려요.</p>
+        <p class="notice notice--event">
+          사전 등록자 중 <strong>추첨 100명</strong>에게 <strong>스타벅스 모바일 상품권(1만원)</strong>을 드려요.
+          <ul class="event-detail">
+            <li>대상: 이메일·생일 사전 등록 완료자 (1인 1회)</li>
+            <li>당첨 발표: 출시 알림과 함께 등록 이메일로 개별 안내</li>
+            <li>기간: 정식 출시 전까지 · 자세한 내용은 추후 안내</li>
+          </ul>
+        </p>
+
+        <form id="form-register" novalidate>
+          <div class="field">
+            <label for="email">이메일</label>
+            <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="birthday">생년월일</label>
+            <input id="birthday" name="birthday" type="date" required />
+          </div>
+          <button type="submit" class="btn btn--primary">등록하기</button>
+        </form>
+      </section>
+
+      <!-- 완료 -->
+      <section id="panel-done" class="panel" aria-labelledby="done-title">
+        <div class="done">
+          <div class="done__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <h2 id="done-title">등록됐어요</h2>
+          <p>서비스 출시 시 알림을 보내드리고,<br />사전 등록 이벤트 추첨 대상에 포함됐어요.</p>
+          <dl class="summary" id="summary"></dl>
+          <button type="button" class="btn btn--primary" id="restart">다시 등록하기</button>
+        </div>
+      </section>
+    </div>
+
+    <footer class="beta">
+      <span class="beta__badge">Beta 서비스</span>
+      <p class="beta__note">테스트 중인 서비스입니다. 기능이 변경될 수 있어요.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const panelRegister = document.getElementById("panel-register");
+      const panelDone = document.getElementById("panel-done");
+      const form = document.getElementById("form-register");
+
+      function show(panel) {
+        panelRegister.classList.toggle("is-active", panel === "register");
+        panelDone.classList.toggle("is-active", panel === "done");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function formatDate(iso) {
+        const [y, m, d] = iso.split("-");
+        return y + "년 " + Number(m) + "월 " + Number(d) + "일";
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const birthday = document.getElementById("birthday").value;
+        if (!email || !birthday) return;
+
+        document.getElementById("summary").innerHTML =
+          "<dt>이메일</dt><dd>" +
+          escapeHtml(email) +
+          "</dd><dt>생일</dt><dd>" +
+          formatDate(birthday) +
+          "</dd>";
+
+        show("done");
+      });
+
+      document.getElementById("restart").addEventListener("click", () => {
+        form.reset();
+        show("register");
+      });
+    })();
+  </script>
+</body>
+</html>
