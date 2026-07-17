@@ -152,37 +152,12 @@
       transform: translateY(20px);
       animation: painCardIn 0.65s ease forwards;
       box-shadow: 0 4px 20px rgba(80, 60, 90, 0.06);
-      transition: box-shadow 0.45s ease, transform 0.45s ease, border-color 0.45s ease, background 0.45s ease;
-    }
-
-    .pain-item.is-spotlight {
-      animation: painSpotlight 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      border-color: rgba(196, 90, 122, 0.5);
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 14px 40px rgba(196, 90, 122, 0.22);
-      transform: translateY(-4px) scale(1.02);
-      z-index: 1;
-      position: relative;
-    }
-
-    .pain-item.is-spotlight blockquote {
-      border-left-width: 4px;
-      border-left-color: #c45a7a;
-      color: var(--ink);
-      font-weight: 500;
-      transition: border-color 0.3s, color 0.3s;
-    }
-
-    .pain-item.is-spotlight .pain-item__answer {
-      background: linear-gradient(135deg, rgba(244, 184, 200, 0.38), rgba(168, 212, 230, 0.38));
-      color: var(--ink);
-      transform: scale(1.02);
-      transition: background 0.3s, transform 0.3s, color 0.3s;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
     }
 
     .pain-item:hover {
+      transform: scale(1.03);
       box-shadow: 0 8px 28px rgba(196, 90, 122, 0.12);
-      transform: translateY(-2px);
     }
 
     .pain-item:nth-child(2) { animation-delay: 0.55s; }
@@ -212,7 +187,6 @@
       padding: 12px 14px;
       background: linear-gradient(135deg, rgba(244, 184, 200, 0.15), rgba(168, 212, 230, 0.15));
       border-radius: 10px;
-      transition: background 0.3s, transform 0.3s, color 0.3s;
     }
 
     .pain-item__answer strong {
@@ -588,21 +562,6 @@
       }
     }
 
-    @keyframes painSpotlight {
-      0% {
-        box-shadow: 0 4px 20px rgba(80, 60, 90, 0.06);
-        transform: translateY(0) scale(1);
-      }
-      40% {
-        box-shadow: 0 18px 44px rgba(196, 90, 122, 0.32);
-        transform: translateY(-8px) scale(1.04);
-      }
-      100% {
-        box-shadow: 0 14px 40px rgba(196, 90, 122, 0.22);
-        transform: translateY(-4px) scale(1.02);
-      }
-    }
-
     @keyframes closingGlow {
       from {
         opacity: 0;
@@ -627,19 +586,6 @@
     @media (min-width: 640px) {
       .app {
         padding-top: 48px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .pain-item.is-spotlight {
-        animation: none;
-        transform: none;
-        border-color: rgba(196, 90, 122, 0.45);
-        box-shadow: 0 8px 28px rgba(196, 90, 122, 0.15);
-      }
-
-      .pain-item.is-spotlight .pain-item__answer {
-        transform: none;
       }
     }
   </style>
@@ -767,25 +713,6 @@
         input.addEventListener("focus", () => input.select());
         input.addEventListener("click", () => input.select());
       });
-
-      const painItems = document.querySelectorAll(".pain-item");
-      if ("IntersectionObserver" in window && painItems.length) {
-        const spotlightObserver = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.remove("is-spotlight");
-                void entry.target.offsetWidth;
-                entry.target.classList.add("is-spotlight");
-              } else {
-                entry.target.classList.remove("is-spotlight");
-              }
-            });
-          },
-          { threshold: 0.55, rootMargin: "-8% 0px -8% 0px" }
-        );
-        painItems.forEach((item) => spotlightObserver.observe(item));
-      }
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
