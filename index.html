@@ -244,6 +244,38 @@
       margin-bottom: 0;
     }
 
+    .share {
+      margin-top: 20px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .share__text {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .share__link {
+      display: block;
+      font-size: 0.88rem;
+      color: #5a8fad;
+      word-break: break-all;
+      text-decoration: none;
+      padding: 10px 12px;
+      background: rgba(168, 212, 230, 0.2);
+      border-radius: 10px;
+    }
+
+    .share__link:hover {
+      text-decoration: underline;
+    }
+
     .field {
       margin-bottom: 18px;
     }
@@ -493,6 +525,11 @@
           </div>
           <button type="submit" class="btn btn--primary">등록하기</button>
         </form>
+
+        <div class="share">
+          <p class="share__text">내 사이트 링크 사이트에 넣고 친구에게 공유하세요!</p>
+          <a class="share__link" id="site-link-register" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
+        </div>
       </section>
 
       <!-- 완료 -->
@@ -504,6 +541,10 @@
           <h2 id="done-title">등록됐어요</h2>
           <p>서비스 출시 시 알림을 보내드리고,<br />사전 등록 이벤트 추첨 대상에 포함됐어요.</p>
           <dl class="summary" id="summary"></dl>
+          <div class="share">
+            <p class="share__text">내 사이트 링크 사이트에 넣고 친구에게 공유하세요!</p>
+            <a class="share__link" id="site-link-done" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
+          </div>
           <button type="button" class="btn btn--primary" id="restart">다시 등록하기</button>
         </div>
       </section>
@@ -539,6 +580,12 @@
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;");
       }
+
+      const siteUrl = window.location.origin;
+      document.querySelectorAll(".share__link").forEach((link) => {
+        link.href = siteUrl;
+        link.textContent = siteUrl;
+      });
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
