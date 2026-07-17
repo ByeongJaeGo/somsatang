@@ -108,51 +108,103 @@
       color: transparent;
     }
 
-    .brand__tag {
-      margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      text-align: center;
-    }
-
-    .brand__tag-pains {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-      font-size: 0.82rem;
+    .brand__tagline {
+      margin-top: 12px;
+      font-size: 0.95rem;
       font-weight: 400;
       color: var(--ink-soft);
-    }
-
-    .brand__tag-pains span {
-      display: inline-block;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid var(--line);
-      border-radius: 999px;
+      line-height: 1.5;
       opacity: 0;
-      transform: translateY(8px);
-      animation: painChipIn 0.55s ease forwards;
+      animation: rise 0.6s ease 0.2s forwards;
     }
 
-    .brand__tag-pains span:nth-child(1) { animation-delay: 0.15s; }
-    .brand__tag-pains span:nth-child(2) { animation-delay: 0.35s; }
-    .brand__tag-pains span:nth-child(3) { animation-delay: 0.55s; }
+    .hero {
+      margin-top: 32px;
+      text-align: left;
+    }
 
-    .brand__tag-solution {
+    .hero__hook {
       font-family: var(--font-display);
-      font-size: clamp(1.08rem, 4.2vw, 1.3rem);
+      font-size: clamp(1.35rem, 5vw, 1.65rem);
+      font-weight: 500;
+      text-align: center;
+      color: var(--ink);
+      line-height: 1.4;
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: hookIn 0.7s ease 0.35s forwards;
+    }
+
+    .hero__hook em {
+      font-style: normal;
+      color: #c45a7a;
+    }
+
+    .pain-item {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      margin-bottom: 14px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: painCardIn 0.65s ease forwards;
+      box-shadow: 0 4px 20px rgba(80, 60, 90, 0.06);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .pain-item:hover {
+      box-shadow: 0 8px 28px rgba(196, 90, 122, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .pain-item:nth-child(2) { animation-delay: 0.55s; }
+    .pain-item:nth-child(3) { animation-delay: 0.85s; }
+    .pain-item:nth-child(4) { animation-delay: 1.15s; }
+
+    .pain-item:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .pain-item blockquote {
+      font-size: 0.92rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.65;
+      border-left: 3px solid var(--blush);
+      padding: 2px 0 2px 14px;
+      margin: 0 0 14px;
+      font-style: italic;
+    }
+
+    .pain-item__answer {
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(244, 184, 200, 0.15), rgba(168, 212, 230, 0.15));
+      border-radius: 10px;
+    }
+
+    .pain-item__answer strong {
+      color: #c45a7a;
+      font-weight: 600;
+    }
+
+    .hero__closing {
+      margin-top: 22px;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 4vw, 1.25rem);
       font-weight: 500;
       color: var(--ink);
-      line-height: 1.45;
+      line-height: 1.5;
       opacity: 0;
-      animation: solutionReveal 0.7s ease 0.75s forwards;
+      animation: closingGlow 0.8s ease 1.5s forwards;
     }
 
-    .brand__tag-solution em {
+    .hero__closing em {
       font-style: normal;
       display: inline-block;
       background: linear-gradient(120deg, #c45a7a 0%, #5a8fad 50%, #5a9a88 100%);
@@ -160,67 +212,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: shimmer 2.8s ease-in-out infinite, solutionPulse 2.2s ease-in-out infinite;
-    }
-
-    .pains {
-      margin-top: 28px;
-      text-align: left;
-    }
-
-    .pains__intro {
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 14px;
-      text-align: center;
-    }
-
-    .pain-item {
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px 18px;
-      margin-bottom: 12px;
-    }
-
-    .pain-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .pain-item blockquote {
-      font-size: 0.88rem;
-      font-weight: 300;
-      color: var(--ink-soft);
-      line-height: 1.6;
-      border-left: 3px solid var(--blush);
-      padding-left: 12px;
-      margin: 0 0 10px;
-      font-style: normal;
-    }
-
-    .pain-item__answer {
-      font-size: 0.88rem;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.55;
-    }
-
-    .pain-item__answer strong {
-      color: #c45a7a;
-      font-weight: 500;
-    }
-
-    .pains__closing {
-      margin-top: 18px;
-      text-align: center;
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: var(--ink);
-      line-height: 1.5;
+      animation: shimmer 2.8s ease-in-out infinite;
     }
 
     .panel {
@@ -516,10 +508,28 @@
       }
     }
 
-    @keyframes solutionReveal {
+    @keyframes hookIn {
       from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(14px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes painCardIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes closingGlow {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
@@ -530,11 +540,6 @@
     @keyframes shimmer {
       0%, 100% { background-position: 0% center; }
       50% { background-position: 100% center; }
-    }
-
-    @keyframes solutionPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
     }
 
     @media (min-width: 640px) {
@@ -552,35 +557,28 @@
       <header class="brand">
         <div class="brand__mark" aria-hidden="true"><span></span></div>
         <h1 class="brand__name">somsatang</h1>
-        <p class="brand__tag">
-          <span class="brand__tag-pains" aria-hidden="true">
-            <span>실망 불안</span>
-            <span>금액 부담</span>
-            <span>호혜성 피로</span>
-          </span>
-          <span class="brand__tag-solution">당신의 선물 고민, somsatang이 <em>해결</em>해 드립니다</span>
-        </p>
+        <p class="brand__tagline">생일 선물, 서로 부담 없이 주고받는 서비스</p>
 
-        <div class="pains">
-          <p class="pains__intro">이런 고민, 해본 적 있나요?</p>
+        <section class="hero" aria-labelledby="hero-hook">
+          <h2 id="hero-hook" class="hero__hook">이런 고민, <em>해본 적 있나요?</em></h2>
 
           <article class="pain-item">
             <blockquote>"상대방이 내 선물을 받고 실망할까 봐(부정적 평가) 불안하다."</blockquote>
-            <p class="pain-item__answer">생일자가 <strong>받고 싶은 선물 3개</strong>를 미리 남겨요. 실망할 걱정 없이, 마음에 드는 걸 골라 줄 수 있어요.</p>
+            <p class="pain-item__answer">→ 생일자가 <strong>받고 싶은 선물 3개</strong>를 미리 남겨요. 실망할 걱정 없이, 마음에 드는 걸 골라 줄 수 있어요.</p>
           </article>
 
           <article class="pain-item">
             <blockquote>"상대가 내 예상보다 너무 비싸거나 싼 걸 줘서 상황이 내 통제를 벗어날까 봐 두렵다."</blockquote>
-            <p class="pain-item__answer">선물자는 <strong>1만원씩, 최대 3만원</strong>까지만 후원해요. 금액이 정해져 있어서 어색함 없이 부담 없이 참여할 수 있어요.</p>
+            <p class="pain-item__answer">→ 선물자는 <strong>1만원씩, 최대 3만원</strong>까지만 후원해요. 금액이 정해져 있어서 어색함 없이 부담 없이 참여할 수 있어요.</p>
           </article>
 
           <article class="pain-item">
             <blockquote>"선물 고르는 데 머리 쓰기 귀찮고, 나중에 동일한 금액으로 갚아야 하는 빚(호혜성)이 피로하다."</blockquote>
-            <p class="pain-item__answer">목록에서 고르기만 하면 돼요. <strong>갚을 빚 없이</strong> 작은 마음을 전하는 선물 문화, somsatang이 만들어 갈게요.</p>
+            <p class="pain-item__answer">→ 목록에서 고르기만 하면 돼요. <strong>갚을 빚 없이</strong> 작은 마음을 전하는 선물 문화, somsatang이 만들어 갈게요.</p>
           </article>
 
-          <p class="pains__closing">somsatang이 이 부담들을 덜어드립니다.</p>
-        </div>
+          <p class="hero__closing"><em>somsatang</em>이 이 부담들을 덜어드립니다.</p>
+        </section>
       </header>
 
       <!-- 등록 -->
