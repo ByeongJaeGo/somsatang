@@ -321,6 +321,8 @@
 
     .share__link {
       display: block;
+      width: 100%;
+      font-family: inherit;
       font-size: 0.95rem;
       font-weight: 500;
       color: #c45a7a;
@@ -330,12 +332,17 @@
       background: rgba(255, 255, 255, 0.92);
       border: 1px dashed rgba(196, 90, 122, 0.45);
       border-radius: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: text;
+      user-select: all;
+      -webkit-user-select: all;
+      text-align: center;
     }
 
-    .share__link:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(196, 90, 122, 0.15);
+    .share__link:focus {
+      outline: none;
+      border-color: rgba(196, 90, 122, 0.7);
+      box-shadow: 0 0 0 3px rgba(244, 184, 200, 0.35);
     }
 
     .share__hint {
@@ -632,8 +639,8 @@
         <div class="share">
           <span class="share__badge">친구에게 알려주기</span>
           <p class="share__text">내 사이트 링크 사이트에 넣고<br />친구에게 공유하세요!</p>
-          <a class="share__link" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
-          <p class="share__hint">링크를 눌러 복사하거나 공유해 보세요</p>
+          <input type="text" class="share__link" readonly value="https://somsatang.vercel.app" aria-label="somsatang 사이트 링크" />
+          <p class="share__hint">링크를 드래그하거나 눌러서 복사하세요</p>
         </div>
 
         <form id="form-register" novalidate>
@@ -661,8 +668,8 @@
           <div class="share">
             <span class="share__badge">친구에게 알려주기</span>
             <p class="share__text">내 사이트 링크 사이트에 넣고<br />친구에게 공유하세요!</p>
-            <a class="share__link" href="https://somsatang.vercel.app" target="_blank" rel="noopener">https://somsatang.vercel.app</a>
-            <p class="share__hint">링크를 눌러 복사하거나 공유해 보세요</p>
+            <input type="text" class="share__link" readonly value="https://somsatang.vercel.app" aria-label="somsatang 사이트 링크" />
+            <p class="share__hint">링크를 드래그하거나 눌러서 복사하세요</p>
           </div>
           <button type="button" class="btn btn--primary" id="restart">다시 등록하기</button>
         </div>
@@ -701,9 +708,10 @@
       }
 
       const siteUrl = window.location.origin;
-      document.querySelectorAll(".share__link").forEach((link) => {
-        link.href = siteUrl;
-        link.textContent = siteUrl;
+      document.querySelectorAll(".share__link").forEach((input) => {
+        input.value = siteUrl;
+        input.addEventListener("focus", () => input.select());
+        input.addEventListener("click", () => input.select());
       });
 
       form.addEventListener("submit", (e) => {
