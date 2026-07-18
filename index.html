@@ -1725,8 +1725,6 @@
             card.querySelector("[data-funded]").textContent = formatWon(amounts[i]);
             card.querySelector("[data-fill]").style.width =
               Math.min(100, (amounts[i] / MAX) * 100) + "%";
-            const btn = card.querySelector("[data-demo-btn]");
-            btn.disabled = used >= MAX;
           });
           resetBtn.classList.toggle("is-visible", used > 0);
         }
@@ -1735,12 +1733,14 @@
           statusEl.innerHTML = html;
         }
 
-        function showToast(giftName) {
-          toastSub.textContent = giftName ? giftName + "에 후원했어요" : "";
+        function showToast(title, sub) {
+          toastEl.querySelector("strong").textContent = title;
+          toastSub.textContent = sub || "";
           toastEl.classList.add("is-visible");
           clearTimeout(toastTimer);
           toastTimer = setTimeout(() => {
             toastEl.classList.remove("is-visible");
+            toastEl.querySelector("strong").textContent = "1만원 선물하셨습니다!";
           }, 1800);
         }
 
@@ -1773,16 +1773,10 @@
 
         function fundGift(index, fromUser) {
           if (total() + UNIT > MAX) {
-            setStatus("이미 <strong>최대 3만원</strong>까지 선물했어요.");
             if (fromUser) {
-              toastSub.textContent = "한도에 도달했어요";
-              toastEl.querySelector("strong").textContent = "더 이상 선물할 수 없어요";
-              toastEl.classList.add("is-visible");
-              clearTimeout(toastTimer);
-              toastTimer = setTimeout(() => {
-                toastEl.classList.remove("is-visible");
-                toastEl.querySelector("strong").textContent = "1만원 선물하셨습니다!";
-              }, 1800);
+              setStatus("이미 <strong>최대 3만원</strong>까지 선물했어요.");
+              showToast("한도 도달!", "최대 3만원까지 선물할 수 있어요");
+              window.alert("이미 최대 3만원까지 선물하셨습니다!\n더 이상 선물할 수 없어요.");
             }
             return false;
           }
@@ -1793,8 +1787,7 @@
           renderDemo();
 
           if (fromUser) {
-            toastEl.querySelector("strong").textContent = "1만원 선물하셨습니다!";
-            showToast(giftNames[index]);
+            showToast("1만원 선물하셨습니다!", giftNames[index] + "에 후원했어요");
             const left = MAX - total();
             if (left <= 0) {
               setStatus(
