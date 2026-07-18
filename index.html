@@ -1191,7 +1191,7 @@
 
           <article class="pain-item">
             <blockquote>"너무 비싼 걸 주면 부담스럽고, 너무 싸면 성의 없어 보일까 봐 눈치 보여요."</blockquote>
-            <p class="pain-item__answer">→ 한 번에 <strong>1만원씩, 최대 3만원</strong>까지만 보탤 수 있어요. 금액이 정해져 있어서 눈치 볼 필요가 없어요.</p>
+            <p class="pain-item__answer">→ 한 번에 <strong>1만원씩, 최대 3만원</strong>까지만 보탤 수 있어요. <strong>같은 선물에도 중복</strong>으로 가능해요.</p>
           </article>
 
           <article class="pain-item">
@@ -1207,15 +1207,15 @@
         <span class="demo__badge">테스트 데모</span>
         <h2 class="demo__title">이렇게 선물해요</h2>
         <p class="demo__desc">
-          임시 사용자가 원하는 선물 3개를 올려두면,<br />
-          선물자는 1만원씩 눌러 <strong>최대 3만원</strong>까지 후원할 수 있어요.
+          오늘 생일인 친구 <strong>홍길동</strong>의 선물 목록이에요.<br />
+          선물자는 1만원씩, <strong>같은 선물에도 중복</strong>으로 눌러 <strong>최대 3만원</strong>까지 후원할 수 있어요.
         </p>
 
         <div class="demo__user">
           <div class="demo__avatar" aria-hidden="true"></div>
           <div>
-            <strong>임시 사용자 · 민수</strong>
-            <span>생일까지 D-12 · 원하는 선물 3개 등록됨</span>
+            <strong id="demo-user-name">오늘 생일인 친구 · 홍길동</strong>
+            <span id="demo-user-meta">오늘 · 원하는 선물 3개 등록됨</span>
           </div>
         </div>
 
@@ -2022,6 +2022,19 @@
         const amounts = [0, 0, 0];
         let playing = false;
 
+        const today = new Date();
+        const todayLabel =
+          today.getFullYear() +
+          "년 " +
+          (today.getMonth() + 1) +
+          "월 " +
+          today.getDate() +
+          "일";
+        document.getElementById("demo-user-name").textContent =
+          "오늘 생일인 친구 · 홍길동";
+        document.getElementById("demo-user-meta").textContent =
+          "오늘(" + todayLabel + ") 생일 · 원하는 선물 3개 등록됨";
+
         function formatWon(n) {
           return n.toLocaleString("ko-KR") + "원";
         }
@@ -2036,7 +2049,8 @@
           leftEl.textContent = formatWon(MAX - used);
           cards.forEach((card, i) => {
             card.querySelector("[data-funded]").textContent = formatWon(amounts[i]);
-            card.querySelector("[data-fill]").style.width = Math.min(100, (amounts[i] / MAX) * 100) + "%";
+            card.querySelector("[data-fill]").style.width =
+              Math.min(100, (amounts[i] / MAX) * 100) + "%";
             const btn = card.querySelector("[data-demo-btn]");
             btn.disabled = used >= MAX;
           });
@@ -2082,13 +2096,22 @@
             cards.forEach((c) => c.classList.remove("is-active"));
             cursor.classList.remove("is-visible", "is-click");
             renderDemo();
-            setStatus("선물자가 목록을 보고 있어요…");
+            setStatus("오늘 생일인 <strong>홍길동</strong>의 목록을 보고 있어요…");
             await wait(1200);
 
             const steps = [
-              { index: 0, text: "플스6에 <strong>+1만원</strong> 후원!" },
-              { index: 1, text: "닌텐도스위치에 <strong>+1만원</strong> 후원!" },
-              { index: 2, text: "롤링스 야구글러브에 <strong>+1만원</strong> 후원!" },
+              {
+                index: 0,
+                text: "플스6에 <strong>+1만원</strong> 후원!",
+              },
+              {
+                index: 0,
+                text: "같은 선물(플스6)에 <strong>또 +1만원</strong>! 중복 후원 가능해요.",
+              },
+              {
+                index: 1,
+                text: "닌텐도스위치에 <strong>+1만원</strong> 후원!",
+              },
             ];
 
             for (const step of steps) {
@@ -2101,11 +2124,13 @@
                 renderDemo();
                 setStatus(step.text);
               }
-              await wait(1100);
+              await wait(1200);
             }
 
-            setStatus("한도 도달! 선물자는 <strong>최대 3만원</strong>까지만 후원할 수 있어요.");
-            await wait(2200);
+            setStatus(
+              "한도 도달! 같은 선물에도 1만원씩 중복 가능하고, 합계는 <strong>최대 3만원</strong>이에요."
+            );
+            await wait(2400);
           }
         }
 
@@ -2120,7 +2145,17 @@
             cards.forEach((c) => c.classList.remove("is-active"));
             card.classList.add("is-active");
             renderDemo();
-            setStatus("직접 눌러봤어요! 합계 <strong>" + formatWon(total()) + "</strong>");
+            const sameGift =
+              amounts[index] > UNIT
+                ? " (같은 선물 중복 후원)"
+                : "";
+            setStatus(
+              "직접 눌러봤어요" +
+                sameGift +
+                "! 합계 <strong>" +
+                formatWon(total()) +
+                "</strong>"
+            );
           });
         });
 
@@ -2128,7 +2163,7 @@
         if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           playLoop();
         } else {
-          setStatus("버튼을 눌러 최대 3만원까지 후원해 보세요.");
+          setStatus("같은 선물에도 1만원씩 중복으로, 최대 3만원까지 후원해 보세요.");
         }
       })();
     })();
