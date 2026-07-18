@@ -11,18 +11,10 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const apiKey = String(process.env.RESEND_API_KEY || "").trim();
-  const notifyTo = String(process.env.NOTIFY_EMAIL || "")
+  const notifyTo = String(process.env.NOTIFY_EMAIL || "gobyjea@gmail.com")
     .trim()
     .replace(/^["']|["']$/g, "");
-
-  if (!apiKey || !notifyTo || notifyTo === "[SENSITIVE]") {
-    console.error("Missing or invalid RESEND_API_KEY / NOTIFY_EMAIL");
-    return res.status(500).json({
-      error: "email_not_configured",
-      message: "서버 이메일 설정이 아직 없습니다.",
-    });
-  }
+  const apiKey = String(process.env.RESEND_API_KEY || "").trim();
 
   let body = req.body;
   if (typeof body === "string") {
@@ -52,72 +44,114 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  const from =
-    process.env.NOTIFY_FROM || "somsatang <onboarding@resend.dev>";
   const [y, m, d] = birthday.split("-");
   const birthdayLabel = y + "년 " + Number(m) + "월 " + Number(d) + "일";
   const submittedAt = new Date().toLocaleString("ko-KR", {
     timeZone: "Asia/Seoul",
   });
 
+  const messageText =
+    "새로운 출시 알림 사전 등록이 들어왔습니다.\n\n" +
+    "이메일: " +
+    email +
+    "\n" +
+    "생일: " +
+    birthdayLabel +
+    " (" +
+    birthday +
+    ")\n" +
+    "등록 시각: " +
+    submittedAt +
+    "\n";
+
+  let formsubmitOk = false;
+  let resendOk = false;
+  let lastError = null;
+
+  // 1) FormSubmit → Gmail 직접 수신 (첫 1회는 활성화 메일 확인 필요)
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + apiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: from,
-        to: [notifyTo],
-        reply_to: email,
-        subject: "[somsatang] 사전 등록 — " + email,
-        text:
-          "새로운 출시 알림 사전 등록이 들어왔습니다.\n\n" +
-          "이메일: " +
-          email +
-          "\n" +
-          "생일: " +
-          birthdayLabel +
-          " (" +
-          birthday +
-          ")\n" +
-          "등록 시각: " +
-          submittedAt +
-          "\n",
-        html:
-          "<h2>somsatang 사전 등록</h2>" +
-          "<p>새로운 출시 알림 사전 등록이 들어왔습니다.</p>" +
-          "<ul>" +
-          "<li><strong>이메일:</strong> " +
-          email +
-          "</li>" +
-          "<li><strong>생일:</strong> " +
-          birthdayLabel +
-          "</li>" +
-          "<li><strong>등록 시각:</strong> " +
-          submittedAt +
-          "</li>" +
-          "</ul>",
-      }),
-    });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      console.error("Resend error:", response.status, data);
-      return res.status(502).json({
-        error: "send_failed",
-        message: "알림 메일 발송에 실패했습니다.",
-      });
+    const fsRes = await fetch(
+      "https://formsubmit.co/ajax/" + encodeURIComponent(notifyTo),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: "[somsatang] 사전 등록 — " + email,
+          _template: "table",
+          _captcha: "false",
+          email: email,
+          생일: birthdayLabel,
+          등록시각: submittedAt,
+          message: messageText,
+        }),
+      }
+    );
+    const fsData = await fsRes.json().catch(() => ({}));
+    formsubmitOk =
+      fsRes.ok &&
+      (fsData.success === "true" ||
+        fsData.success === true ||
+        String(fsData.message || "")
+          .toLowerCase()
+          .includes("success"));
+    if (!formsubmitOk) {
+      console.error("FormSubmit error:", fsRes.status, fsData);
+      lastError = fsData;
     }
-
-    return res.status(200).json({ ok: true, id: data.id || null });
   } catch (err) {
-    console.error("Waitlist email error:", err);
-    return res.status(500).json({
-      error: "server_error",
-      message: "일시적인 오류가 발생했습니다.",
+    console.error("FormSubmit exception:", err);
+    lastError = String(err && err.message ? err.message : err);
+  }
+
+  // 2) Resend 백업 (키가 있을 때만)
+  if (apiKey && apiKey !== "[SENSITIVE]") {
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "somsatang <onboarding@resend.dev>",
+          to: [notifyTo],
+          reply_to: email,
+          subject: "[somsatang] 사전 등록 — " + email,
+          text: messageText,
+          html:
+            "<h2>somsatang 사전 등록</h2><pre style='font-family:inherit;white-space:pre-wrap'>" +
+            messageText.replace(/</g, "&lt;") +
+            "</pre>",
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      resendOk = response.ok && Boolean(data.id);
+      if (!resendOk) {
+        console.error("Resend error:", response.status, data);
+        lastError = data;
+      }
+    } catch (err) {
+      console.error("Resend exception:", err);
+      lastError = String(err && err.message ? err.message : err);
+    }
+  }
+
+  if (!formsubmitOk && !resendOk) {
+    return res.status(502).json({
+      error: "send_failed",
+      message: "알림 메일 발송에 실패했습니다.",
+      detail: lastError,
     });
   }
+
+  return res.status(200).json({
+    ok: true,
+    via: {
+      formsubmit: formsubmitOk,
+      resend: resendOk,
+    },
+  });
 };
