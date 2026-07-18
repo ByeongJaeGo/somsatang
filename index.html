@@ -1737,7 +1737,7 @@
               </select>
             </div>
           </div>
-          <button type="submit" class="btn btn--primary">출시 알림 받기</button>
+          <button type="submit" class="btn btn--primary" id="waitlist-submit">출시 알림 받기</button>
         </form>
 
         <p class="notice notice--after-form">서비스가 정식 출시되면 등록하신 이메일로 <strong>출시 알림</strong>을 보내드려요.</p>
@@ -2090,11 +2090,12 @@
         input.addEventListener("click", () => input.select());
       });
 
-      form.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
         showError("");
         const email = normalizeEmail(document.getElementById("email").value);
         const birthday = getBirthdayValue();
+        const submitBtn = document.getElementById("waitlist-submit");
         if (!email) {
           showError("이메일을 입력해 주세요.");
           return;
@@ -2126,6 +2127,40 @@
         }
         saveWaitlist(list);
 
+        const originalLabel = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "등록 중…";
+
+        try {
+          const response = await fetch("/api/waitlist", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, birthday: birthday }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            if (data.error === "email_not_configured") {
+              showError(
+                "아직 알림 메일 설정이 안 되어 있어요. 잠시 후 다시 시도해 주세요."
+              );
+            } else {
+              showError(
+                data.message || "등록 중 오류가 났어요. 잠시 후 다시 시도해 주세요."
+              );
+            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+            return;
+          }
+        } catch (err) {
+          showError("네트워크 오류가 났어요. 연결을 확인하고 다시 시도해 주세요.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+          return;
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
         document.getElementById("summary").innerHTML =
           "<dt>이메일</dt><dd>" +
           escapeHtml(email) +
