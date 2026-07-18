@@ -98,6 +98,14 @@
       opacity: 0.9;
     }
 
+    .brand__title-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .brand__name {
       font-family: var(--font-display);
       font-size: clamp(2.4rem, 8vw, 3rem);
@@ -108,6 +116,20 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+    }
+
+    .brand__beta {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(135deg, #d46b8a, #6a9bbb);
+      border-radius: 999px;
+      padding: 5px 10px;
+      transform: translateY(2px);
     }
 
     .brand__tagline {
@@ -1556,7 +1578,10 @@
     <div class="main">
       <header class="brand">
         <div class="brand__mark" aria-hidden="true"><span></span></div>
-        <h1 class="brand__name">somsatang</h1>
+        <div class="brand__title-row">
+          <h1 class="brand__name">somsatang</h1>
+          <span class="brand__beta">베타</span>
+        </div>
         <p class="brand__tagline">선물 때문에 머리아프고 부담스러운 생일,<br />모두가 즐기는 생일로</p>
 
         <section class="hero" aria-labelledby="hero-hook">
