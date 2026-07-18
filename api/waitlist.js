@@ -77,6 +77,8 @@ module.exports = async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Origin: "https://somsatang.vercel.app",
+          Referer: "https://somsatang.vercel.app/",
         },
         body: JSON.stringify({
           _subject: "[somsatang] 사전 등록 — " + email,
@@ -90,16 +92,19 @@ module.exports = async function handler(req, res) {
       }
     );
     const fsData = await fsRes.json().catch(() => ({}));
+    const fsMessage = String(fsData.message || "");
     formsubmitOk =
       fsRes.ok &&
       (fsData.success === "true" ||
         fsData.success === true ||
-        String(fsData.message || "")
-          .toLowerCase()
-          .includes("success"));
+        fsMessage.toLowerCase().includes("success") ||
+        fsMessage.toLowerCase().includes("activation") ||
+        fsMessage.includes("Activate Form"));
     if (!formsubmitOk) {
       console.error("FormSubmit error:", fsRes.status, fsData);
       lastError = fsData;
+    } else {
+      console.log("FormSubmit ok:", fsData);
     }
   } catch (err) {
     console.error("FormSubmit exception:", err);
