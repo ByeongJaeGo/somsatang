@@ -639,6 +639,76 @@
       white-space: nowrap;
     }
 
+    .gift-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .gift-item {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--line);
+    }
+
+    .gift-item__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .gift-item__num {
+      font-family: var(--font-display);
+      color: #c45a7a;
+      font-size: 1.05rem;
+      min-width: 1.2em;
+    }
+
+    .gift-item__name {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .gift-item__price {
+      font-size: 0.9rem;
+      color: #5a8fad;
+      white-space: nowrap;
+    }
+
+    .gift-item__note {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+
+    .gift-slot {
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .gift-slot:last-of-type {
+      border-bottom: none;
+      margin-bottom: 8px;
+      padding-bottom: 0;
+    }
+
+    .gift-slot__head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .gift-slot__head strong {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: #c45a7a;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -973,6 +1043,15 @@
 
         <div class="section-block">
           <div class="section-block__head">
+            <h3>내가 원하는 선물</h3>
+            <button type="button" class="btn btn--tiny" id="open-gifts-btn">등록하기</button>
+          </div>
+          <div class="gift-list" id="gift-list"></div>
+          <div class="empty-state" id="gift-empty">아직 등록한 선물이 없어요. 받고 싶은 선물 3개를 등록해 보세요.</div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-block__head">
             <h3>내 친구</h3>
           </div>
           <div class="friend-list" id="friend-list"></div>
@@ -991,6 +1070,66 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- 선물 3개 등록 -->
+      <section id="panel-gifts" class="panel" aria-labelledby="gifts-title">
+        <h2 id="gifts-title" class="panel__title">원하는 선물 3개</h2>
+        <p class="panel__desc">받고 싶은 선물을 딱 3개만 적어 주세요. 친구는 부담 없이 고를 수 있어요.</p>
+        <p class="form-error" id="gifts-error" role="alert"></p>
+
+        <form id="form-gifts" novalidate>
+          <div class="gift-slot">
+            <div class="gift-slot__head"><strong>1</strong> 첫 번째 선물</div>
+            <div class="field">
+              <label for="gift1-name">이름</label>
+              <input id="gift1-name" type="text" placeholder="예: 미니 향수" required />
+            </div>
+            <div class="field">
+              <label for="gift1-price">가격 (원)</label>
+              <input id="gift1-price" type="number" min="1000" step="1000" placeholder="예: 30000" required />
+            </div>
+            <div class="field">
+              <label for="gift1-note">메모 (선택)</label>
+              <input id="gift1-note" type="text" placeholder="링크, 색상, 사이즈 등" />
+            </div>
+          </div>
+
+          <div class="gift-slot">
+            <div class="gift-slot__head"><strong>2</strong> 두 번째 선물</div>
+            <div class="field">
+              <label for="gift2-name">이름</label>
+              <input id="gift2-name" type="text" placeholder="예: 카페 기프티콘" required />
+            </div>
+            <div class="field">
+              <label for="gift2-price">가격 (원)</label>
+              <input id="gift2-price" type="number" min="1000" step="1000" placeholder="예: 10000" required />
+            </div>
+            <div class="field">
+              <label for="gift2-note">메모 (선택)</label>
+              <input id="gift2-note" type="text" placeholder="브랜드나 금액대" />
+            </div>
+          </div>
+
+          <div class="gift-slot">
+            <div class="gift-slot__head"><strong>3</strong> 세 번째 선물</div>
+            <div class="field">
+              <label for="gift3-name">이름</label>
+              <input id="gift3-name" type="text" placeholder="예: 다이어리" required />
+            </div>
+            <div class="field">
+              <label for="gift3-price">가격 (원)</label>
+              <input id="gift3-price" type="number" min="1000" step="1000" placeholder="예: 20000" required />
+            </div>
+            <div class="field">
+              <label for="gift3-note">메모 (선택)</label>
+              <input id="gift3-note" type="text" placeholder="작가명, 제목 등" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary">저장하기</button>
+          <button type="button" class="btn btn--ghost" id="gifts-back-btn">홈으로</button>
+        </form>
       </section>
     </div>
 
@@ -1019,21 +1158,26 @@
 
       const panelAuth = document.getElementById("panel-auth");
       const panelHome = document.getElementById("panel-home");
+      const panelGifts = document.getElementById("panel-gifts");
       const tabLogin = document.getElementById("tab-login");
       const tabSignup = document.getElementById("tab-signup");
       const formLogin = document.getElementById("form-login");
       const formSignup = document.getElementById("form-signup");
+      const formGifts = document.getElementById("form-gifts");
       const authTitle = document.getElementById("auth-title");
       const authDesc = document.getElementById("auth-desc");
       const authError = document.getElementById("auth-error");
       const friendError = document.getElementById("friend-error");
+      const giftsError = document.getElementById("gifts-error");
       const birthYear = document.getElementById("birth-year");
       const birthMonth = document.getElementById("birth-month");
       const birthDay = document.getElementById("birth-day");
+      const openGiftsBtn = document.getElementById("open-gifts-btn");
 
       function show(panel) {
         panelAuth.classList.toggle("is-active", panel === "auth");
         panelHome.classList.toggle("is-active", panel === "home");
+        panelGifts.classList.toggle("is-active", panel === "gifts");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -1268,11 +1412,60 @@
       tabLogin.addEventListener("click", () => setAuthMode("login"));
       tabSignup.addEventListener("click", () => setAuthMode("signup"));
 
+      function formatWon(n) {
+        return Number(n).toLocaleString("ko-KR") + "원";
+      }
+
+      function getUserGifts(user) {
+        return Array.isArray(user.gifts) ? user.gifts : [];
+      }
+
+      function fillGiftForm(gifts) {
+        for (let i = 1; i <= 3; i++) {
+          const gift = gifts[i - 1] || {};
+          document.getElementById("gift" + i + "-name").value = gift.name || "";
+          document.getElementById("gift" + i + "-price").value = gift.price || "";
+          document.getElementById("gift" + i + "-note").value = gift.note || "";
+        }
+        showError(giftsError, "");
+      }
+
       function renderHome(user) {
         document.getElementById("home-name").textContent = user.name || "친구";
         document.getElementById("home-email").textContent = user.email;
         document.getElementById("my-birthday").textContent = formatDate(user.birthday);
         document.getElementById("my-dday").textContent = formatDday(daysUntilBirthday(user.birthday));
+
+        const gifts = getUserGifts(user);
+        const giftList = document.getElementById("gift-list");
+        const giftEmpty = document.getElementById("gift-empty");
+        openGiftsBtn.textContent = gifts.length === 3 ? "수정하기" : "등록하기";
+        if (gifts.length !== 3) {
+          giftList.innerHTML = "";
+          giftEmpty.style.display = "block";
+        } else {
+          giftEmpty.style.display = "none";
+          giftList.innerHTML = gifts
+            .map(
+              (gift, index) =>
+                '<article class="gift-item">' +
+                '<div class="gift-item__top">' +
+                '<span class="gift-item__num">' +
+                (index + 1) +
+                "</span>" +
+                '<span class="gift-item__name">' +
+                escapeHtml(gift.name) +
+                "</span>" +
+                '<span class="gift-item__price">' +
+                escapeHtml(formatWon(gift.price)) +
+                "</span></div>" +
+                (gift.note
+                  ? '<p class="gift-item__note">' + escapeHtml(gift.note) + "</p>"
+                  : "") +
+                "</article>"
+            )
+            .join("");
+        }
 
         const users = getUsers();
         const friendEmails = Array.isArray(user.friends) ? user.friends : [];
@@ -1359,6 +1552,7 @@
           password: password,
           birthday: birthday,
           friends: [],
+          gifts: [],
           createdAt: new Date().toISOString(),
         };
         saveUsers(users);
@@ -1388,9 +1582,49 @@
         setSession("");
         formLogin.reset();
         formSignup.reset();
+        formGifts.reset();
         refreshBirthDays();
         setAuthMode("login");
         show("auth");
+      });
+
+      openGiftsBtn.addEventListener("click", () => {
+        const sessionEmail = getSessionEmail();
+        const user = getUsers()[sessionEmail];
+        if (!user) return;
+        fillGiftForm(getUserGifts(user));
+        show("gifts");
+      });
+
+      document.getElementById("gifts-back-btn").addEventListener("click", () => {
+        const sessionEmail = getSessionEmail();
+        if (sessionEmail) enterHome(sessionEmail);
+        else show("auth");
+      });
+
+      formGifts.addEventListener("submit", (e) => {
+        e.preventDefault();
+        showError(giftsError, "");
+        const sessionEmail = getSessionEmail();
+        const users = getUsers();
+        const me = users[sessionEmail];
+        if (!me) return;
+
+        const gifts = [1, 2, 3].map((n) => ({
+          name: document.getElementById("gift" + n + "-name").value.trim(),
+          price: Number(document.getElementById("gift" + n + "-price").value),
+          note: document.getElementById("gift" + n + "-note").value.trim(),
+        }));
+
+        if (gifts.some((g) => !g.name || !g.price || g.price < 1000)) {
+          showError(giftsError, "선물 이름과 가격(1,000원 이상)을 모두 입력해 주세요.");
+          return;
+        }
+
+        me.gifts = gifts;
+        users[sessionEmail] = me;
+        saveUsers(users);
+        enterHome(sessionEmail);
       });
 
       document.getElementById("add-friend-btn").addEventListener("click", () => {
