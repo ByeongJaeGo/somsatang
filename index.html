@@ -856,6 +856,125 @@
       margin-bottom: 28px;
     }
 
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 36, 48, 0.48);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal__dialog {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 380px);
+      padding: 28px 24px 22px;
+      border-radius: 22px;
+      background: #fff9fc;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 24px 60px rgba(28, 36, 48, 0.28);
+      text-align: center;
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .modal.is-open .modal__dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal__icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d46b8a, #6a9bbb);
+      display: grid;
+      place-items: center;
+    }
+
+    .modal__icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .modal__title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .modal__desc {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .modal__summary {
+      text-align: left;
+      background: rgba(168, 212, 230, 0.18);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    .modal__summary dt {
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-top: 8px;
+    }
+
+    .modal__summary dt:first-child {
+      margin-top: 0;
+    }
+
+    .modal__summary dd {
+      margin-top: 3px;
+      font-weight: 500;
+      color: var(--ink);
+      word-break: break-all;
+    }
+
+    .modal__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal__actions .btn {
+      width: 100%;
+    }
+
     .summary {
       text-align: left;
       background: rgba(255, 255, 255, 0.55);
@@ -1765,8 +1884,8 @@
           <div class="done__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
-          <h2 id="done-title">등록됐어요</h2>
-          <p>서비스 출시 시 알림을 보내드리고,<br />이벤트 추첨 대상에 포함됐어요.</p>
+          <h2 id="done-title">등록 완료</h2>
+          <p>친구에게도 알려주고 함께 기다려 보세요.</p>
           <dl class="summary" id="summary"></dl>
           <div class="share">
             <span class="share__badge">친구에게 알려주기</span>
@@ -1783,6 +1902,21 @@
       <span class="beta__badge">Beta 서비스</span>
       <p class="beta__note">테스트 중인 서비스입니다. 기능이 변경될 수 있어요.</p>
     </footer>
+  </div>
+
+  <div class="modal" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="success-modal-title" hidden>
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__dialog">
+      <div class="modal__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h2 class="modal__title" id="success-modal-title">등록되었습니다!</h2>
+      <p class="modal__desc">출시되면 알림을 보내드리고,<br />이벤트 추첨 대상에 포함됐어요.</p>
+      <dl class="modal__summary" id="modal-summary"></dl>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--primary" id="success-modal-ok">확인</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1809,12 +1943,43 @@
       const birthMonth = document.getElementById("birth-month");
       const birthDay = document.getElementById("birth-day");
       const birthInput = document.getElementById("birth-input");
+      const successModal = document.getElementById("success-modal");
+      const modalSummary = document.getElementById("modal-summary");
       let syncingBirthday = false;
+      let pendingDoneSummary = "";
 
       function show(panel) {
         panelWaitlist.classList.toggle("is-active", panel === "waitlist");
         panelDone.classList.toggle("is-active", panel === "done");
         window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function openSuccessModal(email, birthday) {
+        modalSummary.innerHTML =
+          "<dt>이메일</dt><dd>" +
+          escapeHtml(email) +
+          "</dd><dt>생일</dt><dd>" +
+          formatDate(birthday) +
+          "</dd>";
+        pendingDoneSummary = modalSummary.innerHTML;
+        successModal.hidden = false;
+        requestAnimationFrame(() => {
+          successModal.classList.add("is-open");
+        });
+        document.body.style.overflow = "hidden";
+        document.getElementById("success-modal-ok").focus();
+      }
+
+      function closeSuccessModal(goToDone) {
+        successModal.classList.remove("is-open");
+        document.body.style.overflow = "";
+        setTimeout(() => {
+          successModal.hidden = true;
+          if (goToDone) {
+            document.getElementById("summary").innerHTML = pendingDoneSummary;
+            show("done");
+          }
+        }, 220);
       }
 
       function escapeHtml(str) {
@@ -2161,13 +2326,21 @@
 
         submitBtn.disabled = false;
         submitBtn.textContent = originalLabel;
-        document.getElementById("summary").innerHTML =
-          "<dt>이메일</dt><dd>" +
-          escapeHtml(email) +
-          "</dd><dt>생일</dt><dd>" +
-          formatDate(birthday) +
-          "</dd>";
-        show("done");
+        openSuccessModal(email, birthday);
+      });
+
+      document.getElementById("success-modal-ok").addEventListener("click", () => {
+        closeSuccessModal(true);
+      });
+
+      successModal.querySelector("[data-modal-close]").addEventListener("click", () => {
+        closeSuccessModal(true);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && successModal.classList.contains("is-open")) {
+          closeSuccessModal(true);
+        }
       });
 
       document.getElementById("restart").addEventListener("click", () => {
