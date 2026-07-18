@@ -861,7 +861,7 @@
     }
 
     .demo {
-      margin-top: 36px;
+      margin: 8px 0 28px;
       padding: 24px 18px 20px;
       background: rgba(255, 249, 252, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.75);
@@ -1176,6 +1176,73 @@
         </section>
       </header>
 
+      <section class="demo" id="demo-flow" aria-label="테스트 사용 데모">
+        <span class="demo__badge">테스트 데모</span>
+        <h2 class="demo__title">이렇게 선물해요</h2>
+        <p class="demo__desc">
+          임시 사용자가 원하는 선물 3개를 올려두면,<br />
+          선물자는 1만원씩 눌러 <strong>최대 3만원</strong>까지 후원할 수 있어요.
+        </p>
+
+        <div class="demo__user">
+          <div class="demo__avatar" aria-hidden="true"></div>
+          <div>
+            <strong>임시 사용자 · 민수</strong>
+            <span>생일까지 D-12 · 원하는 선물 3개 등록됨</span>
+          </div>
+        </div>
+
+        <div class="demo__budget">
+          <div>
+            <div class="demo__budget-label">선물자 후원 합계</div>
+            <div class="demo__budget-value" id="demo-total">0원</div>
+          </div>
+          <div style="text-align: right">
+            <div class="demo__budget-label">남은 한도</div>
+            <div class="demo__budget-value" id="demo-left">30,000원</div>
+          </div>
+        </div>
+
+        <article class="demo-gift" data-demo-gift="0">
+          <div class="demo-gift__top">
+            <div>
+              <div class="demo-gift__name">플스6</div>
+              <div class="demo-gift__price">희망가 698,000원</div>
+            </div>
+            <div class="demo-gift__funded" data-funded>0원</div>
+          </div>
+          <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+          <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+        </article>
+
+        <article class="demo-gift" data-demo-gift="1">
+          <div class="demo-gift__top">
+            <div>
+              <div class="demo-gift__name">닌텐도스위치</div>
+              <div class="demo-gift__price">희망가 359,000원</div>
+            </div>
+            <div class="demo-gift__funded" data-funded>0원</div>
+          </div>
+          <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+          <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+        </article>
+
+        <article class="demo-gift" data-demo-gift="2">
+          <div class="demo-gift__top">
+            <div>
+              <div class="demo-gift__name">롤링스 야구글러브</div>
+              <div class="demo-gift__price">희망가 189,000원</div>
+            </div>
+            <div class="demo-gift__funded" data-funded>0원</div>
+          </div>
+          <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+          <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+        </article>
+
+        <p class="demo__status" id="demo-status">선물자가 목록을 보고 있어요…</p>
+        <div class="demo__cursor" id="demo-cursor" aria-hidden="true"></div>
+      </section>
+
       <!-- 회원가입 / 로그인 -->
       <section id="panel-auth" class="panel is-active" aria-labelledby="auth-title">
         <div class="auth-tabs" role="tablist">
@@ -1358,73 +1425,6 @@
         </form>
       </section>
     </div>
-
-    <section class="demo" id="demo-flow" aria-label="테스트 사용 데모">
-      <span class="demo__badge">테스트 데모</span>
-      <h2 class="demo__title">이렇게 선물해요</h2>
-      <p class="demo__desc">
-        임시 사용자가 원하는 선물 3개를 올려두면,<br />
-        선물자는 1만원씩 눌러 <strong>최대 3만원</strong>까지 후원할 수 있어요.
-      </p>
-
-      <div class="demo__user">
-        <div class="demo__avatar" aria-hidden="true"></div>
-        <div>
-          <strong>임시 사용자 · 민수</strong>
-          <span>생일까지 D-12 · 원하는 선물 3개 등록됨</span>
-        </div>
-      </div>
-
-      <div class="demo__budget">
-        <div>
-          <div class="demo__budget-label">선물자 후원 합계</div>
-          <div class="demo__budget-value" id="demo-total">0원</div>
-        </div>
-        <div style="text-align: right">
-          <div class="demo__budget-label">남은 한도</div>
-          <div class="demo__budget-value" id="demo-left">30,000원</div>
-        </div>
-      </div>
-
-      <article class="demo-gift" data-demo-gift="0">
-        <div class="demo-gift__top">
-          <div>
-            <div class="demo-gift__name">플스6</div>
-            <div class="demo-gift__price">희망가 698,000원</div>
-          </div>
-          <div class="demo-gift__funded" data-funded>0원</div>
-        </div>
-        <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
-        <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
-      </article>
-
-      <article class="demo-gift" data-demo-gift="1">
-        <div class="demo-gift__top">
-          <div>
-            <div class="demo-gift__name">닌텐도스위치</div>
-            <div class="demo-gift__price">희망가 359,000원</div>
-          </div>
-          <div class="demo-gift__funded" data-funded>0원</div>
-        </div>
-        <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
-        <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
-      </article>
-
-      <article class="demo-gift" data-demo-gift="2">
-        <div class="demo-gift__top">
-          <div>
-            <div class="demo-gift__name">롤링스 야구글러브</div>
-            <div class="demo-gift__price">희망가 189,000원</div>
-          </div>
-          <div class="demo-gift__funded" data-funded>0원</div>
-        </div>
-        <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
-        <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
-      </article>
-
-      <p class="demo__status" id="demo-status">선물자가 목록을 보고 있어요…</p>
-      <div class="demo__cursor" id="demo-cursor" aria-hidden="true"></div>
-    </section>
 
     <footer class="beta">
       <span class="beta__badge">Beta 서비스</span>
