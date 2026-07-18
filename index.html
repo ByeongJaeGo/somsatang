@@ -684,6 +684,16 @@
       font-weight: 300;
     }
 
+    .gift-item__link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: #5a8fad;
+      word-break: break-all;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     .gift-slot {
       margin-bottom: 18px;
       padding-bottom: 16px;
@@ -1048,6 +1058,7 @@
           </div>
           <div class="gift-list" id="gift-list"></div>
           <div class="empty-state" id="gift-empty">아직 등록한 선물이 없어요. 받고 싶은 선물 3개를 등록해 보세요.</div>
+          <p class="panel__desc" style="margin-top: 8px; margin-bottom: 0">등록 후에도 <strong>수정하기</strong>로 언제든 바꿀 수 있어요.</p>
         </div>
 
         <div class="section-block">
@@ -1075,14 +1086,14 @@
       <!-- 선물 3개 등록 -->
       <section id="panel-gifts" class="panel" aria-labelledby="gifts-title">
         <h2 id="gifts-title" class="panel__title">원하는 선물 3개</h2>
-        <p class="panel__desc">받고 싶은 선물을 딱 3개만 적어 주세요. 친구는 부담 없이 고를 수 있어요.</p>
+        <p class="panel__desc">선물 이름, 가격, 구입처 링크를 적어 주세요. 나중에 언제든 수정할 수 있어요.</p>
         <p class="form-error" id="gifts-error" role="alert"></p>
 
         <form id="form-gifts" novalidate>
           <div class="gift-slot">
             <div class="gift-slot__head"><strong>1</strong> 첫 번째 선물</div>
             <div class="field">
-              <label for="gift1-name">이름</label>
+              <label for="gift1-name">선물 이름</label>
               <input id="gift1-name" type="text" placeholder="예: 미니 향수" required />
             </div>
             <div class="field">
@@ -1090,15 +1101,15 @@
               <input id="gift1-price" type="number" min="1000" step="1000" placeholder="예: 30000" required />
             </div>
             <div class="field">
-              <label for="gift1-note">메모 (선택)</label>
-              <input id="gift1-note" type="text" placeholder="링크, 색상, 사이즈 등" />
+              <label for="gift1-link">구입처 링크</label>
+              <input id="gift1-link" type="url" placeholder="https://..." required />
             </div>
           </div>
 
           <div class="gift-slot">
             <div class="gift-slot__head"><strong>2</strong> 두 번째 선물</div>
             <div class="field">
-              <label for="gift2-name">이름</label>
+              <label for="gift2-name">선물 이름</label>
               <input id="gift2-name" type="text" placeholder="예: 카페 기프티콘" required />
             </div>
             <div class="field">
@@ -1106,15 +1117,15 @@
               <input id="gift2-price" type="number" min="1000" step="1000" placeholder="예: 10000" required />
             </div>
             <div class="field">
-              <label for="gift2-note">메모 (선택)</label>
-              <input id="gift2-note" type="text" placeholder="브랜드나 금액대" />
+              <label for="gift2-link">구입처 링크</label>
+              <input id="gift2-link" type="url" placeholder="https://..." required />
             </div>
           </div>
 
           <div class="gift-slot">
             <div class="gift-slot__head"><strong>3</strong> 세 번째 선물</div>
             <div class="field">
-              <label for="gift3-name">이름</label>
+              <label for="gift3-name">선물 이름</label>
               <input id="gift3-name" type="text" placeholder="예: 다이어리" required />
             </div>
             <div class="field">
@@ -1122,8 +1133,8 @@
               <input id="gift3-price" type="number" min="1000" step="1000" placeholder="예: 20000" required />
             </div>
             <div class="field">
-              <label for="gift3-note">메모 (선택)</label>
-              <input id="gift3-note" type="text" placeholder="작가명, 제목 등" />
+              <label for="gift3-link">구입처 링크</label>
+              <input id="gift3-link" type="url" placeholder="https://..." required />
             </div>
           </div>
 
@@ -1420,12 +1431,28 @@
         return Array.isArray(user.gifts) ? user.gifts : [];
       }
 
+      function normalizeLink(url) {
+        const value = String(url || "").trim();
+        if (!value) return "";
+        if (/^https?:\/\//i.test(value)) return value;
+        return "https://" + value;
+      }
+
+      function isValidLink(url) {
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch (e) {
+          return false;
+        }
+      }
+
       function fillGiftForm(gifts) {
         for (let i = 1; i <= 3; i++) {
           const gift = gifts[i - 1] || {};
           document.getElementById("gift" + i + "-name").value = gift.name || "";
           document.getElementById("gift" + i + "-price").value = gift.price || "";
-          document.getElementById("gift" + i + "-note").value = gift.note || "";
+          document.getElementById("gift" + i + "-link").value = gift.link || gift.note || "";
         }
         showError(giftsError, "");
       }
@@ -1459,8 +1486,12 @@
                 '<span class="gift-item__price">' +
                 escapeHtml(formatWon(gift.price)) +
                 "</span></div>" +
-                (gift.note
-                  ? '<p class="gift-item__note">' + escapeHtml(gift.note) + "</p>"
+                (gift.link
+                  ? '<a class="gift-item__link" href="' +
+                    escapeHtml(gift.link) +
+                    '" target="_blank" rel="noopener">' +
+                    escapeHtml(gift.link) +
+                    "</a>"
                   : "") +
                 "</article>"
             )
@@ -1613,11 +1644,15 @@
         const gifts = [1, 2, 3].map((n) => ({
           name: document.getElementById("gift" + n + "-name").value.trim(),
           price: Number(document.getElementById("gift" + n + "-price").value),
-          note: document.getElementById("gift" + n + "-note").value.trim(),
+          link: normalizeLink(document.getElementById("gift" + n + "-link").value),
         }));
 
-        if (gifts.some((g) => !g.name || !g.price || g.price < 1000)) {
-          showError(giftsError, "선물 이름과 가격(1,000원 이상)을 모두 입력해 주세요.");
+        if (gifts.some((g) => !g.name || !g.price || g.price < 1000 || !g.link)) {
+          showError(giftsError, "선물 이름, 가격(1,000원 이상), 구입처 링크를 모두 입력해 주세요.");
+          return;
+        }
+        if (gifts.some((g) => !isValidLink(g.link))) {
+          showError(giftsError, "구입처 링크 형식을 확인해 주세요. (예: https://...)");
           return;
         }
 
