@@ -56,6 +56,199 @@
       z-index: 0;
     }
 
+    .festive {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -80px;
+      width: 28px;
+      height: 36px;
+      border-radius: 50% 50% 48% 48%;
+      opacity: 0.55;
+      animation: balloonFloat linear infinite;
+      filter: saturate(1.05);
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 10%;
+      width: 34%;
+      height: 22%;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      transform: translateX(-70%);
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -14px;
+      width: 1.5px;
+      height: 42px;
+      background: rgba(28, 36, 48, 0.18);
+      transform: translateX(-50%);
+    }
+
+    .balloon:nth-child(1) { left: 4%; background: #f4b8c8; animation-duration: 18s; animation-delay: 0s; transform: scale(1); }
+    .balloon:nth-child(2) { left: 12%; background: #a8d4e6; animation-duration: 22s; animation-delay: -4s; transform: scale(0.85); }
+    .balloon:nth-child(3) { left: 22%; background: #b8e0d2; animation-duration: 20s; animation-delay: -9s; transform: scale(1.1); }
+    .balloon:nth-child(4) { left: 78%; background: #f0c4a8; animation-duration: 19s; animation-delay: -2s; transform: scale(0.9); }
+    .balloon:nth-child(5) { left: 86%; background: #d4b8e8; animation-duration: 24s; animation-delay: -7s; transform: scale(1.05); }
+    .balloon:nth-child(6) { left: 94%; background: #f4b8c8; animation-duration: 21s; animation-delay: -12s; transform: scale(0.8); }
+    .balloon:nth-child(7) { left: 8%; background: #a8d4e6; animation-duration: 26s; animation-delay: -15s; transform: scale(0.7); opacity: 0.4; }
+    .balloon:nth-child(8) { left: 91%; background: #b8e0d2; animation-duration: 23s; animation-delay: -18s; transform: scale(0.75); opacity: 0.4; }
+
+    @keyframes balloonFloat {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(-4deg);
+        opacity: 0;
+      }
+      8% { opacity: 0.55; }
+      50% {
+        transform: translate3d(18px, -55vh, 0) rotate(5deg);
+      }
+      92% { opacity: 0.45; }
+      100% {
+        transform: translate3d(-10px, -110vh, 0) rotate(-3deg);
+        opacity: 0;
+      }
+    }
+
+    .burst {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: burstPop ease-in-out infinite;
+    }
+
+    .burst::before,
+    .burst::after {
+      content: "";
+      position: absolute;
+      inset: -18px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      opacity: 0.35;
+      animation: burstRing 3.6s ease-out infinite;
+    }
+
+    .burst::after {
+      inset: -28px;
+      animation-delay: 0.15s;
+      opacity: 0.2;
+    }
+
+    .burst span {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      margin: -3px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: sparkFly 3.6s ease-out infinite;
+    }
+
+    .burst span:nth-child(1) { --dx: 0px; --dy: -34px; }
+    .burst span:nth-child(2) { --dx: 28px; --dy: -18px; animation-delay: 0.05s; }
+    .burst span:nth-child(3) { --dx: 32px; --dy: 12px; animation-delay: 0.08s; }
+    .burst span:nth-child(4) { --dx: 10px; --dy: 30px; animation-delay: 0.02s; }
+    .burst span:nth-child(5) { --dx: -22px; --dy: 24px; animation-delay: 0.1s; }
+    .burst span:nth-child(6) { --dx: -34px; --dy: -4px; animation-delay: 0.04s; }
+    .burst span:nth-child(7) { --dx: -16px; --dy: -28px; animation-delay: 0.12s; }
+    .burst span:nth-child(8) { --dx: 18px; --dy: -30px; animation-delay: 0.07s; }
+
+    .burst--1 { top: 18%; left: 6%; color: #d46b8a; animation-delay: 0s; animation-duration: 4.8s; }
+    .burst--2 { top: 32%; left: 92%; color: #6a9bbb; animation-delay: -1.2s; animation-duration: 5.2s; }
+    .burst--3 { top: 58%; left: 4%; color: #5a9a88; animation-delay: -2.4s; animation-duration: 4.6s; }
+    .burst--4 { top: 72%; left: 90%; color: #e0a070; animation-delay: -0.8s; animation-duration: 5.4s; }
+    .burst--5 { top: 12%; left: 88%; color: #c9a0e0; animation-delay: -3.1s; animation-duration: 4.9s; }
+    .burst--6 { top: 84%; left: 10%; color: #d46b8a; animation-delay: -1.8s; animation-duration: 5.6s; }
+
+    @keyframes burstPop {
+      0%, 55%, 100% { opacity: 0; transform: scale(0.4); }
+      60% { opacity: 0.9; transform: scale(1); }
+      75% { opacity: 0.5; transform: scale(1.05); }
+      90% { opacity: 0; transform: scale(1.1); }
+    }
+
+    @keyframes burstRing {
+      0%, 55% { transform: scale(0.2); opacity: 0; }
+      60% { opacity: 0.45; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    @keyframes sparkFly {
+      0%, 55% { transform: translate(0, 0) scale(0.4); opacity: 0; }
+      62% { opacity: 1; }
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.2);
+        opacity: 0;
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 7px;
+      height: 11px;
+      border-radius: 2px;
+      opacity: 0;
+      animation: confettiFall linear infinite;
+    }
+
+    .confetti:nth-child(15) { left: 3%; background: #f4b8c8; animation-duration: 9s; animation-delay: 0s; }
+    .confetti:nth-child(16) { left: 9%; background: #a8d4e6; animation-duration: 11s; animation-delay: -2s; width: 5px; height: 8px; }
+    .confetti:nth-child(17) { left: 16%; background: #b8e0d2; animation-duration: 10s; animation-delay: -5s; }
+    .confetti:nth-child(18) { left: 84%; background: #f0c4a8; animation-duration: 12s; animation-delay: -1s; }
+    .confetti:nth-child(19) { left: 91%; background: #d4b8e8; animation-duration: 9.5s; animation-delay: -3.5s; width: 6px; height: 6px; border-radius: 50%; }
+    .confetti:nth-child(20) { left: 97%; background: #f4b8c8; animation-duration: 13s; animation-delay: -7s; }
+    .confetti:nth-child(21) { left: 7%; background: #6a9bbb; animation-duration: 10.5s; animation-delay: -8s; }
+    .confetti:nth-child(22) { left: 93%; background: #d46b8a; animation-duration: 11.5s; animation-delay: -4s; }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 0.7; }
+      100% {
+        transform: translate3d(24px, 110vh, 0) rotate(520deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .balloon:nth-child(n+5),
+      .burst--5,
+      .burst--6,
+      .confetti:nth-child(n+19) {
+        display: none;
+      }
+
+      .balloon,
+      .burst {
+        opacity: 0.4;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .festive {
+        display: none;
+      }
+    }
+
     .app {
       position: relative;
       z-index: 1;
@@ -1692,6 +1885,32 @@
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
+  <div class="festive" aria-hidden="true">
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+    <span class="balloon"></span>
+
+    <span class="burst burst--1"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+    <span class="burst burst--2"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+    <span class="burst burst--3"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+    <span class="burst burst--4"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+    <span class="burst burst--5"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+    <span class="burst burst--6"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+    <span class="confetti"></span>
+  </div>
 
   <div class="app">
     <div class="main">
