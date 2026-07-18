@@ -455,6 +455,21 @@
       gap: 8px;
     }
 
+    .birthday-or {
+      margin: 10px 0 8px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 400;
+    }
+
+    .field-hint {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+
     .auth-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1434,15 +1449,26 @@
             <div class="email-suggest" id="email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
           </div>
           <div class="field">
-            <label for="birth-year">생년월일</label>
+            <label for="birth-input">생년월일</label>
+            <input
+              id="birth-input"
+              name="birth-input"
+              type="text"
+              inputmode="numeric"
+              autocomplete="bday"
+              placeholder="직접 입력 (예: 1998.03.15)"
+              aria-describedby="birth-hint"
+            />
+            <p class="field-hint" id="birth-hint">숫자로 직접 입력하거나, 아래에서 선택하세요</p>
+            <p class="birthday-or">또는 선택</p>
             <div class="birthday-row">
-              <select id="birth-year" name="birth-year" required aria-label="출생 연도">
+              <select id="birth-year" name="birth-year" aria-label="출생 연도">
                 <option value="">년</option>
               </select>
-              <select id="birth-month" name="birth-month" required aria-label="출생 월">
+              <select id="birth-month" name="birth-month" aria-label="출생 월">
                 <option value="">월</option>
               </select>
-              <select id="birth-day" name="birth-day" required aria-label="출생 일">
+              <select id="birth-day" name="birth-day" aria-label="출생 일">
                 <option value="">일</option>
               </select>
             </div>
@@ -1500,6 +1526,8 @@
       const birthYear = document.getElementById("birth-year");
       const birthMonth = document.getElementById("birth-month");
       const birthDay = document.getElementById("birth-day");
+      const birthInput = document.getElementById("birth-input");
+      let syncingBirthday = false;
 
       function show(panel) {
         panelWaitlist.classList.toggle("is-active", panel === "waitlist");
@@ -1518,6 +1546,11 @@
       function formatDate(iso) {
         const [y, m, d] = iso.split("-");
         return y + "년 " + Number(m) + "월 " + Number(d) + "일";
+      }
+
+      function formatBirthdayDisplay(iso) {
+        const [y, m, d] = iso.split("-");
+        return y + "." + m + "." + d;
       }
 
       function normalizeEmail(email) {
@@ -1551,6 +1584,23 @@
         return new Date(Number(year), Number(month), 0).getDate();
       }
 
+      function isValidBirthday(year, month, day) {
+        const y = Number(year);
+        const m = Number(month);
+        const d = Number(day);
+        const currentYear = new Date().getFullYear();
+        if (!y || !m || !d) return false;
+        if (y < 1920 || y > currentYear) return false;
+        if (m < 1 || m > 12) return false;
+        if (d < 1 || d > daysInMonth(y, m)) return false;
+        const date = new Date(y, m - 1, d);
+        return (
+          date.getFullYear() === y &&
+          date.getMonth() === m - 1 &&
+          date.getDate() === d
+        );
+      }
+
       function refreshBirthDays() {
         const selectedDay = birthDay.value;
         const maxDay = daysInMonth(birthYear.value, birthMonth.value);
@@ -1566,9 +1616,68 @@
         }
       }
 
-      function getBirthdayValue() {
+      function getBirthdayFromSelects() {
         if (!birthYear.value || !birthMonth.value || !birthDay.value) return "";
-        return birthYear.value + "-" + birthMonth.value + "-" + birthDay.value;
+        const iso = birthYear.value + "-" + birthMonth.value + "-" + birthDay.value;
+        return isValidBirthday(birthYear.value, birthMonth.value, birthDay.value)
+          ? iso
+          : "";
+      }
+
+      function parseBirthdayText(raw) {
+        const text = String(raw || "").trim();
+        if (!text) return "";
+        let y;
+        let m;
+        let d;
+        const digits = text.replace(/\D/g, "");
+        if (digits.length === 8) {
+          y = digits.slice(0, 4);
+          m = digits.slice(4, 6);
+          d = digits.slice(6, 8);
+        } else {
+          const parts = text.split(/[.\-/년월일\s]+/).filter(Boolean);
+          if (parts.length !== 3) return "";
+          y = parts[0];
+          m = parts[1].padStart(2, "0");
+          d = parts[2].padStart(2, "0");
+        }
+        if (!isValidBirthday(y, m, d)) return "";
+        return y + "-" + String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+      }
+
+      function getBirthdayValue() {
+        return getBirthdayFromSelects() || parseBirthdayText(birthInput.value);
+      }
+
+      function applyBirthdayToSelects(iso) {
+        if (!iso) return;
+        const [y, m, d] = iso.split("-");
+        syncingBirthday = true;
+        birthYear.value = y;
+        birthMonth.value = m;
+        refreshBirthDays();
+        birthDay.value = d;
+        syncingBirthday = false;
+      }
+
+      function syncInputFromSelects() {
+        if (syncingBirthday) return;
+        const iso = getBirthdayFromSelects();
+        if (!iso) return;
+        syncingBirthday = true;
+        birthInput.value = formatBirthdayDisplay(iso);
+        syncingBirthday = false;
+      }
+
+      function syncSelectsFromInput() {
+        if (syncingBirthday) return;
+        const iso = parseBirthdayText(birthInput.value);
+        if (!iso) return;
+        applyBirthdayToSelects(iso);
+        syncingBirthday = true;
+        birthInput.value = formatBirthdayDisplay(iso);
+        syncingBirthday = false;
       }
 
       const currentYear = new Date().getFullYear();
@@ -1584,8 +1693,17 @@
         option.textContent = month + "월";
         birthMonth.appendChild(option);
       }
-      birthYear.addEventListener("change", refreshBirthDays);
-      birthMonth.addEventListener("change", refreshBirthDays);
+      birthYear.addEventListener("change", () => {
+        refreshBirthDays();
+        syncInputFromSelects();
+      });
+      birthMonth.addEventListener("change", () => {
+        refreshBirthDays();
+        syncInputFromSelects();
+      });
+      birthDay.addEventListener("change", syncInputFromSelects);
+      birthInput.addEventListener("input", syncSelectsFromInput);
+      birthInput.addEventListener("blur", syncSelectsFromInput);
       refreshBirthDays();
 
       function setupEmailSuggest(inputId, suggestId) {
@@ -1695,12 +1813,20 @@
         showError("");
         const email = normalizeEmail(document.getElementById("email").value);
         const birthday = getBirthdayValue();
-        if (!email || !birthday) {
-          showError("이메일과 생일을 모두 입력해 주세요.");
+        if (!email) {
+          showError("이메일을 입력해 주세요.");
           return;
         }
         if (!email.includes("@")) {
           showError("올바른 이메일을 입력해 주세요.");
+          return;
+        }
+        if (!birthday) {
+          if (birthInput.value.trim()) {
+            showError("생년월일 형식을 확인해 주세요. 예: 1998.03.15");
+          } else {
+            showError("생년월일을 입력하거나 선택해 주세요.");
+          }
           return;
         }
 
