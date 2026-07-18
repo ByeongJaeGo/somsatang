@@ -895,6 +895,24 @@
       overflow: hidden;
     }
 
+    @media (min-width: 860px) {
+      .app {
+        max-width: 860px;
+      }
+
+      .brand,
+      .panel,
+      .beta {
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .brand {
+        margin-bottom: 36px;
+      }
+    }
+
     .demo__badge {
       display: inline-block;
       font-size: 0.72rem;
@@ -921,6 +939,211 @@
       font-weight: 300;
       margin-bottom: 18px;
       line-height: 1.55;
+    }
+
+    .demo-stage {
+      display: grid;
+      gap: 14px;
+    }
+
+    @media (min-width: 860px) {
+      .demo-stage {
+        grid-template-columns: 0.92fr 1.08fr;
+        align-items: start;
+        gap: 16px;
+      }
+    }
+
+    .demo-home {
+      padding: 16px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+    }
+
+    .demo-home__label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #6a9bbb;
+      background: rgba(168, 212, 230, 0.35);
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 12px;
+    }
+
+    .demo-home__me {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(244, 184, 200, 0.22), rgba(168, 212, 230, 0.22));
+      border: 1px solid var(--line);
+    }
+
+    .demo-home__me strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .demo-home__me span {
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+
+    .demo-home__dday {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: #c45a7a;
+      white-space: nowrap;
+    }
+
+    .demo-home__title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .demo-friends {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .demo-friend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 249, 252, 0.7);
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+
+    .demo-friend.is-today {
+      border-color: rgba(196, 90, 122, 0.45);
+      background: rgba(244, 184, 200, 0.18);
+      box-shadow: 0 6px 18px rgba(196, 90, 122, 0.12);
+    }
+
+    .demo-friend.is-active {
+      transform: scale(1.02);
+      border-color: rgba(196, 90, 122, 0.55);
+      box-shadow: 0 8px 22px rgba(196, 90, 122, 0.16);
+    }
+
+    .demo-friend__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--blush), var(--sky));
+    }
+
+    .demo-friend:nth-child(2) .demo-friend__avatar {
+      background: linear-gradient(135deg, var(--sky), var(--mint));
+    }
+
+    .demo-friend:nth-child(3) .demo-friend__avatar {
+      background: linear-gradient(135deg, var(--mint), var(--blush));
+    }
+
+    .demo-friend:nth-child(4) .demo-friend__avatar {
+      background: linear-gradient(135deg, #e8c4a8, var(--sky));
+    }
+
+    .demo-friend:nth-child(5) .demo-friend__avatar {
+      background: linear-gradient(135deg, #c9b6e4, var(--blush));
+    }
+
+    .demo-friend__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .demo-friend__name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .demo-friend__badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #fff;
+      background: #c45a7a;
+      border-radius: 999px;
+      padding: 2px 7px;
+      letter-spacing: 0.02em;
+    }
+
+    .demo-friend__meta {
+      margin-top: 2px;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+
+    .demo-friend__btn {
+      flex-shrink: 0;
+      border: 1px solid rgba(196, 90, 122, 0.35);
+      background: #fff;
+      color: #c45a7a;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .demo-friend__btn.is-pressed {
+      background: linear-gradient(135deg, #d46b8a, #6a9bbb);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .demo-friend__dday {
+      flex-shrink: 0;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 2.6em;
+      text-align: right;
+    }
+
+    .demo-friend.is-today .demo-friend__dday {
+      color: #c45a7a;
+    }
+
+    .demo-gift-panel {
+      position: relative;
+      padding: 16px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+    }
+
+    .demo-gift-panel__label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #c45a7a;
+      background: rgba(244, 184, 200, 0.35);
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 12px;
     }
 
     .demo__user {
@@ -1221,6 +1444,15 @@
       transform: translate(-50%, -50%) scale(1);
     }
 
+    .demo__cursor.is-dragging {
+      width: 26px;
+      height: 26px;
+      background: rgba(196, 90, 122, 0.45);
+      box-shadow:
+        0 0 0 8px rgba(196, 90, 122, 0.14),
+        0 8px 20px rgba(196, 90, 122, 0.28);
+    }
+
     .demo__cursor.is-click {
       transform: translate(-50%, -50%) scale(0.75);
       background: rgba(196, 90, 122, 0.45);
@@ -1347,74 +1579,94 @@
 
       <section class="demo" id="demo-flow" aria-label="테스트 사용 데모">
         <span class="demo__badge">테스트 데모</span>
-        <h2 class="demo__title">이렇게 선물해요</h2>
+        <h2 class="demo__title">로그인 후 이렇게 보여요</h2>
         <p class="demo__desc">
-          오늘 생일인 친구 <strong>홍길동</strong>의 선물 목록이에요.<br />
-          <strong>선물하기</strong>를 직접 눌러 1만원씩 후원해 보세요. 같은 선물도 중복 가능, <strong>최대 3만원</strong>까지예요.
+          <strong>로그인 후 친구 목록</strong> 예시예요. 오늘 생일인 친구에게
+          <strong>선물하기</strong>를 눌러 직접 체험해 보세요. 1만원씩, 최대 3만원까지.
         </p>
         <p class="demo__hint">선물하기 버튼을 눌러 체험해 보세요</p>
 
-        <div class="demo__user">
-          <div class="demo__avatar" aria-hidden="true"></div>
-          <div>
-            <strong id="demo-user-name">오늘 생일인 친구 · 홍길동</strong>
-            <span id="demo-user-meta">오늘 · 원하는 선물 3개 등록됨</span>
+        <div class="demo-stage">
+          <aside class="demo-home" aria-label="로그인 후 화면 예시">
+            <span class="demo-home__label">로그인 후 화면 예시</span>
+            <div class="demo-home__me">
+              <div>
+                <strong>나 · 김하늘</strong>
+                <span id="demo-my-birthday">내 생일</span>
+              </div>
+              <div class="demo-home__dday" id="demo-my-dday">D-42</div>
+            </div>
+            <h3 class="demo-home__title">내 친구 목록</h3>
+            <ul class="demo-friends" id="demo-friends"></ul>
+          </aside>
+
+          <div class="demo-gift-panel">
+            <span class="demo-gift-panel__label">선물하기 화면</span>
+
+            <div class="demo__user">
+              <div class="demo__avatar" aria-hidden="true"></div>
+              <div>
+                <strong id="demo-user-name">오늘 생일인 친구 · 홍길동</strong>
+                <span id="demo-user-meta">오늘 · 원하는 선물 3개 등록됨</span>
+              </div>
+            </div>
+
+            <div class="demo__budget">
+              <div>
+                <div class="demo__budget-label">선물자 후원 합계</div>
+                <div class="demo__budget-value" id="demo-total">0원</div>
+              </div>
+              <div style="text-align: right">
+                <div class="demo__budget-label">남은 한도</div>
+                <div class="demo__budget-value" id="demo-left">30,000원</div>
+              </div>
+            </div>
+
+            <article class="demo-gift" data-demo-gift="0">
+              <div class="demo-gift__top">
+                <div>
+                  <div class="demo-gift__name">플스6</div>
+                  <div class="demo-gift__price">희망가 698,000원</div>
+                </div>
+                <div class="demo-gift__funded" data-funded>0원</div>
+              </div>
+              <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+              <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+            </article>
+
+            <article class="demo-gift" data-demo-gift="1">
+              <div class="demo-gift__top">
+                <div>
+                  <div class="demo-gift__name">닌텐도스위치</div>
+                  <div class="demo-gift__price">희망가 359,000원</div>
+                </div>
+                <div class="demo-gift__funded" data-funded>0원</div>
+              </div>
+              <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+              <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+            </article>
+
+            <article class="demo-gift" data-demo-gift="2">
+              <div class="demo-gift__top">
+                <div>
+                  <div class="demo-gift__name">롤링스 야구글러브</div>
+                  <div class="demo-gift__price">희망가 189,000원</div>
+                </div>
+                <div class="demo-gift__funded" data-funded>0원</div>
+              </div>
+              <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+              <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+            </article>
+
+            <p class="demo__status is-attention" id="demo-status">선물하기 버튼을 눌러 체험해 보세요.</p>
+            <button type="button" class="demo__reset" id="demo-reset">처음부터 다시 체험하기</button>
+            <div class="demo-toast" id="demo-toast" role="status" aria-live="polite">
+              <strong>1만원 선물하셨습니다!</strong>
+              <span id="demo-toast-sub"></span>
+            </div>
           </div>
         </div>
 
-        <div class="demo__budget">
-          <div>
-            <div class="demo__budget-label">선물자 후원 합계</div>
-            <div class="demo__budget-value" id="demo-total">0원</div>
-          </div>
-          <div style="text-align: right">
-            <div class="demo__budget-label">남은 한도</div>
-            <div class="demo__budget-value" id="demo-left">30,000원</div>
-          </div>
-        </div>
-
-        <article class="demo-gift" data-demo-gift="0">
-          <div class="demo-gift__top">
-            <div>
-              <div class="demo-gift__name">플스6</div>
-              <div class="demo-gift__price">희망가 698,000원</div>
-            </div>
-            <div class="demo-gift__funded" data-funded>0원</div>
-          </div>
-          <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
-          <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
-        </article>
-
-        <article class="demo-gift" data-demo-gift="1">
-          <div class="demo-gift__top">
-            <div>
-              <div class="demo-gift__name">닌텐도스위치</div>
-              <div class="demo-gift__price">희망가 359,000원</div>
-            </div>
-            <div class="demo-gift__funded" data-funded>0원</div>
-          </div>
-          <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
-          <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
-        </article>
-
-        <article class="demo-gift" data-demo-gift="2">
-          <div class="demo-gift__top">
-            <div>
-              <div class="demo-gift__name">롤링스 야구글러브</div>
-              <div class="demo-gift__price">희망가 189,000원</div>
-            </div>
-            <div class="demo-gift__funded" data-funded>0원</div>
-          </div>
-          <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
-          <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
-        </article>
-
-        <p class="demo__status is-attention" id="demo-status">선물하기 버튼을 눌러 체험해 보세요.</p>
-        <button type="button" class="demo__reset" id="demo-reset">처음부터 다시 체험하기</button>
-        <div class="demo-toast" id="demo-toast" role="status" aria-live="polite">
-          <strong>1만원 선물하셨습니다!</strong>
-          <span id="demo-toast-sub"></span>
-        </div>
         <div class="demo__cursor" id="demo-cursor" aria-hidden="true"></div>
       </section>
 
@@ -1864,6 +2116,7 @@
         const UNIT = 10000;
         const MAX = 30000;
         const demo = document.getElementById("demo-flow");
+        const friendsEl = document.getElementById("demo-friends");
         const cursor = document.getElementById("demo-cursor");
         const statusEl = document.getElementById("demo-status");
         const totalEl = document.getElementById("demo-total");
@@ -1888,6 +2141,63 @@
           "월 " +
           today.getDate() +
           "일";
+
+        function addDays(base, days) {
+          const d = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+          d.setDate(d.getDate() + days);
+          return d;
+        }
+
+        function formatMonthDay(date) {
+          return date.getMonth() + 1 + "월 " + date.getDate() + "일";
+        }
+
+        const myBirthday = addDays(today, 42);
+        document.getElementById("demo-my-birthday").textContent =
+          "내 생일 " + formatMonthDay(myBirthday);
+        document.getElementById("demo-my-dday").textContent = "D-42";
+
+        const friendData = [
+          { name: "홍길동", offset: 0 },
+          { name: "김서연", offset: 3 },
+          { name: "이준호", offset: 12 },
+          { name: "박민지", offset: 28 },
+          { name: "최유진", offset: 45 },
+        ];
+
+        friendsEl.innerHTML = friendData
+          .map((friend) => {
+            const birth = addDays(today, friend.offset);
+            const isToday = friend.offset === 0;
+            const dday = isToday ? "D-Day" : "D-" + friend.offset;
+            const meta = isToday
+              ? "오늘(" + todayLabel + ") 생일 · 선물 3개 등록됨"
+              : formatMonthDay(birth) + " 생일";
+            const action = isToday
+              ? '<button type="button" class="demo-friend__btn" data-friend-gift>선물하기</button>'
+              : '<span class="demo-friend__dday">' + dday + "</span>";
+            return (
+              '<li class="demo-friend' +
+              (isToday ? " is-today" : "") +
+              '" data-friend-name="' +
+              friend.name +
+              '">' +
+              '<div class="demo-friend__avatar" aria-hidden="true"></div>' +
+              '<div class="demo-friend__body">' +
+              '<div class="demo-friend__name">' +
+              friend.name +
+              (isToday ? '<span class="demo-friend__badge">오늘 생일</span>' : "") +
+              "</div>" +
+              '<div class="demo-friend__meta">' +
+              meta +
+              "</div>" +
+              "</div>" +
+              action +
+              "</li>"
+            );
+          })
+          .join("");
+
         document.getElementById("demo-user-name").textContent =
           "오늘 생일인 친구 · 홍길동";
         document.getElementById("demo-user-meta").textContent =
@@ -1947,11 +2257,36 @@
           cursor.classList.add("is-visible");
         }
 
+        async function dragCursorTo(el, duration) {
+          const ms = duration || 900;
+          cursor.classList.add("is-dragging");
+          cursor.style.transition =
+            "left " +
+            ms +
+            "ms cubic-bezier(0.22, 1, 0.36, 1), top " +
+            ms +
+            "ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s, transform 0.2s, width 0.2s, height 0.2s";
+          moveCursorTo(el);
+          await wait(ms);
+          if (userTookOver) {
+            cursor.classList.remove("is-dragging");
+            cursor.style.transition = "";
+            return;
+          }
+          cursor.classList.remove("is-dragging");
+          cursor.style.transition = "";
+        }
+
+        function highlightFriend(name) {
+          friendsEl.querySelectorAll(".demo-friend").forEach((row) => {
+            row.classList.toggle("is-active", row.dataset.friendName === name);
+          });
+        }
+
         async function clickButton(btn, card) {
           cards.forEach((c) => c.classList.remove("is-active"));
-          card.classList.add("is-active");
-          moveCursorTo(btn);
-          await wait(500);
+          if (card) card.classList.add("is-active");
+          await dragCursorTo(btn, 850);
           if (userTookOver) return;
           cursor.classList.add("is-click");
           btn.classList.add("is-pressed");
@@ -2009,7 +2344,11 @@
           amounts[1] = 0;
           amounts[2] = 0;
           cards.forEach((c) => c.classList.remove("is-active"));
-          cursor.classList.remove("is-visible", "is-click");
+          friendsEl.querySelectorAll(".demo-friend").forEach((row) => {
+            row.classList.remove("is-active");
+          });
+          cursor.classList.remove("is-visible", "is-click", "is-dragging");
+          cursor.style.transition = "";
           toastEl.classList.remove("is-visible");
           renderDemo();
           setStatus("선물하기 버튼을 눌러 체험해 보세요.");
@@ -2020,8 +2359,26 @@
           playing = true;
           while (!userTookOver) {
             resetDemo();
-            setStatus("예시: 오늘 생일인 <strong>홍길동</strong>의 목록을 보고 있어요…");
-            await wait(1200);
+            setStatus("로그인 후 <strong>내 친구 목록</strong>을 보고 있어요…");
+            await wait(1100);
+            if (userTookOver) break;
+
+            const friendBtn = demo.querySelector("[data-friend-gift]");
+            setStatus("오늘 생일인 <strong>홍길동</strong>에게 마우스를 옮겨요…");
+            await dragCursorTo(friendBtn, 1100);
+            if (userTookOver) break;
+            cursor.classList.add("is-click");
+            friendBtn.classList.add("is-pressed");
+            highlightFriend("홍길동");
+            await wait(180);
+            cursor.classList.remove("is-click");
+            friendBtn.classList.remove("is-pressed");
+            setStatus(
+              "오늘(" +
+                todayLabel +
+                ") 생일인 <strong>홍길동</strong>의 선물 목록으로 이동!"
+            );
+            await wait(900);
             if (userTookOver) break;
 
             const steps = [
@@ -2040,18 +2397,17 @@
               if (userTookOver) break;
               const card = cards[step.index];
               const btn = card.querySelector("[data-demo-btn]");
-              setStatus("선물하기 버튼을 눌러요… (직접 눌러도 돼요)");
+              setStatus("선물하기 버튼으로 마우스를 드래그해요…");
               await clickButton(btn, card);
               if (userTookOver) break;
               if (fundGift(step.index, false)) {
                 setStatus(step.text);
               }
-              await wait(1100);
+              await wait(1000);
             }
 
             if (userTookOver) break;
 
-            // 한도 소진 안내
             showToast(
               "한도가 되어 선물 금액을 모두 소진하였습니다!",
               "합계 " + formatWon(MAX)
@@ -2062,7 +2418,6 @@
             await wait(2000);
             if (userTookOver) break;
 
-            // 한도 초과 클릭 시도까지 보여주기
             const failCard = cards[2];
             const failBtn = failCard.querySelector("[data-demo-btn]");
             setStatus("한도가 끝난 뒤에도 눌러보면…");
@@ -2078,14 +2433,32 @@
             await wait(2800);
           }
           playing = false;
-          cursor.classList.remove("is-visible", "is-click");
+          cursor.classList.remove("is-visible", "is-click", "is-dragging");
+        }
+
+        const friendGiftBtn = demo.querySelector("[data-friend-gift]");
+        if (friendGiftBtn) {
+          friendGiftBtn.addEventListener("click", () => {
+            userTookOver = true;
+            cursor.classList.remove("is-visible", "is-click", "is-dragging");
+            highlightFriend("홍길동");
+            friendGiftBtn.classList.add("is-pressed");
+            setTimeout(() => friendGiftBtn.classList.remove("is-pressed"), 160);
+            setStatus(
+              "오늘 생일인 <strong>홍길동</strong>의 선물에 아래에서 직접 후원해 보세요!"
+            );
+            document
+              .querySelector(".demo-gift-panel")
+              .scrollIntoView({ behavior: "smooth", block: "nearest" });
+          });
         }
 
         cards.forEach((card, index) => {
           const btn = card.querySelector("[data-demo-btn]");
           btn.addEventListener("click", () => {
             userTookOver = true;
-            cursor.classList.remove("is-visible", "is-click");
+            cursor.classList.remove("is-visible", "is-click", "is-dragging");
+            highlightFriend("홍길동");
             btn.classList.add("is-pressed");
             setTimeout(() => btn.classList.remove("is-pressed"), 160);
             fundGift(index, true);
@@ -2101,6 +2474,7 @@
         if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           playLoop();
         } else {
+          highlightFriend("홍길동");
           setStatus("선물하기 버튼을 눌러 1만원 선물을 체험해 보세요.");
         }
       })();
