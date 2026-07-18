@@ -11,11 +11,13 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const notifyTo = process.env.NOTIFY_EMAIL;
+  const apiKey = String(process.env.RESEND_API_KEY || "").trim();
+  const notifyTo = String(process.env.NOTIFY_EMAIL || "")
+    .trim()
+    .replace(/^["']|["']$/g, "");
 
-  if (!apiKey || !notifyTo) {
-    console.error("Missing RESEND_API_KEY or NOTIFY_EMAIL");
+  if (!apiKey || !notifyTo || notifyTo === "[SENSITIVE]") {
+    console.error("Missing or invalid RESEND_API_KEY / NOTIFY_EMAIL");
     return res.status(500).json({
       error: "email_not_configured",
       message: "서버 이메일 설정이 아직 없습니다.",
