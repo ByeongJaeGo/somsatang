@@ -410,7 +410,8 @@
       margin-bottom: 8px;
     }
 
-    .field input {
+    .field input,
+    .field select {
       width: 100%;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.85);
@@ -423,9 +424,26 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .field input:focus {
+    .field select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234a5568' d='M1.4 0.6L6 5.2 10.6 0.6 12 2 6 8 0 2z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .field input:focus,
+    .field select:focus {
       border-color: rgba(196, 90, 122, 0.45);
       box-shadow: 0 0 0 3px rgba(244, 184, 200, 0.35);
+    }
+
+    .birthday-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 8px;
     }
 
     .btn {
@@ -694,8 +712,18 @@
             <div class="email-suggest" id="email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
           </div>
           <div class="field">
-            <label for="birthday">생년월일</label>
-            <input id="birthday" name="birthday" type="date" required />
+            <label for="birth-year">생년월일</label>
+            <div class="birthday-row">
+              <select id="birth-year" name="birth-year" required aria-label="출생 연도">
+                <option value="">년</option>
+              </select>
+              <select id="birth-month" name="birth-month" required aria-label="출생 월">
+                <option value="">월</option>
+              </select>
+              <select id="birth-day" name="birth-day" required aria-label="출생 일">
+                <option value="">일</option>
+              </select>
+            </div>
           </div>
           <button type="submit" class="btn btn--primary">등록하기</button>
         </form>
@@ -875,10 +903,58 @@
         setTimeout(closeEmailSuggest, 120);
       });
 
+      const birthYear = document.getElementById("birth-year");
+      const birthMonth = document.getElementById("birth-month");
+      const birthDay = document.getElementById("birth-day");
+      const currentYear = new Date().getFullYear();
+
+      for (let year = currentYear; year >= 1920; year--) {
+        const option = document.createElement("option");
+        option.value = String(year);
+        option.textContent = year + "년";
+        birthYear.appendChild(option);
+      }
+
+      for (let month = 1; month <= 12; month++) {
+        const option = document.createElement("option");
+        option.value = String(month).padStart(2, "0");
+        option.textContent = month + "월";
+        birthMonth.appendChild(option);
+      }
+
+      function daysInMonth(year, month) {
+        if (!year || !month) return 31;
+        return new Date(Number(year), Number(month), 0).getDate();
+      }
+
+      function refreshBirthDays() {
+        const selectedDay = birthDay.value;
+        const maxDay = daysInMonth(birthYear.value, birthMonth.value);
+        birthDay.innerHTML = '<option value="">일</option>';
+        for (let day = 1; day <= maxDay; day++) {
+          const option = document.createElement("option");
+          option.value = String(day).padStart(2, "0");
+          option.textContent = day + "일";
+          birthDay.appendChild(option);
+        }
+        if (selectedDay && Number(selectedDay) <= maxDay) {
+          birthDay.value = selectedDay;
+        }
+      }
+
+      function getBirthdayValue() {
+        if (!birthYear.value || !birthMonth.value || !birthDay.value) return "";
+        return birthYear.value + "-" + birthMonth.value + "-" + birthDay.value;
+      }
+
+      birthYear.addEventListener("change", refreshBirthDays);
+      birthMonth.addEventListener("change", refreshBirthDays);
+      refreshBirthDays();
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const email = document.getElementById("email").value.trim();
-        const birthday = document.getElementById("birthday").value;
+        const birthday = getBirthdayValue();
         if (!email || !birthday) return;
 
         document.getElementById("summary").innerHTML =
@@ -894,6 +970,7 @@
       document.getElementById("restart").addEventListener("click", () => {
         form.reset();
         closeEmailSuggest();
+        refreshBirthDays();
         show("register");
       });
     })();
