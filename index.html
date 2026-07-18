@@ -1030,8 +1030,14 @@
       font-size: 0.88rem;
       font-weight: 500;
       color: var(--ink);
-      cursor: default;
-      transition: background 0.2s, color 0.2s, transform 0.15s;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .demo-gift__btn:hover:not(:disabled) {
+      border-color: #c45a7a;
+      color: #c45a7a;
+      box-shadow: 0 4px 14px rgba(196, 90, 122, 0.18);
     }
 
     .demo-gift__btn.is-pressed {
@@ -1043,6 +1049,7 @@
 
     .demo-gift__btn:disabled {
       opacity: 0.45;
+      cursor: not-allowed;
     }
 
     .demo__status {
@@ -1057,6 +1064,68 @@
     .demo__status strong {
       color: #c45a7a;
       font-weight: 500;
+    }
+
+    .demo__hint {
+      margin: 0 0 12px;
+      text-align: center;
+      font-size: 0.86rem;
+      color: #c45a7a;
+      font-weight: 500;
+    }
+
+    .demo-toast {
+      position: absolute;
+      left: 50%;
+      top: 42%;
+      z-index: 8;
+      transform: translate(-50%, -40%) scale(0.92);
+      min-width: min(280px, 86%);
+      padding: 18px 22px;
+      border-radius: 18px;
+      background: rgba(28, 24, 22, 0.92);
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 18px 40px rgba(28, 24, 22, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .demo-toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .demo-toast strong {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .demo-toast span {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .demo__reset {
+      display: none;
+      margin: 10px auto 0;
+      border: 0;
+      background: transparent;
+      color: #6a9bbb;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .demo__reset.is-visible {
+      display: block;
     }
 
     .demo__cursor {
@@ -1208,8 +1277,9 @@
         <h2 class="demo__title">이렇게 선물해요</h2>
         <p class="demo__desc">
           오늘 생일인 친구 <strong>홍길동</strong>의 선물 목록이에요.<br />
-          선물자는 1만원씩, <strong>같은 선물에도 중복</strong>으로 눌러 <strong>최대 3만원</strong>까지 후원할 수 있어요.
+          <strong>선물하기</strong>를 직접 눌러 1만원씩 후원해 보세요. 같은 선물도 중복 가능, <strong>최대 3만원</strong>까지예요.
         </p>
+        <p class="demo__hint">아래 버튼을 눌러 직접 체험해 보세요</p>
 
         <div class="demo__user">
           <div class="demo__avatar" aria-hidden="true"></div>
@@ -1266,7 +1336,12 @@
           <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
         </article>
 
-        <p class="demo__status" id="demo-status">선물자가 목록을 보고 있어요…</p>
+        <p class="demo__status" id="demo-status">선물하기 버튼을 눌러 체험해 보세요.</p>
+        <button type="button" class="demo__reset" id="demo-reset">처음부터 다시 체험하기</button>
+        <div class="demo-toast" id="demo-toast" role="status" aria-live="polite">
+          <strong>1만원 선물하셨습니다!</strong>
+          <span id="demo-toast-sub"></span>
+        </div>
         <div class="demo__cursor" id="demo-cursor" aria-hidden="true"></div>
       </section>
 
@@ -1608,9 +1683,17 @@
         const statusEl = document.getElementById("demo-status");
         const totalEl = document.getElementById("demo-total");
         const leftEl = document.getElementById("demo-left");
+        const toastEl = document.getElementById("demo-toast");
+        const toastSub = document.getElementById("demo-toast-sub");
+        const resetBtn = document.getElementById("demo-reset");
         const cards = Array.from(demo.querySelectorAll("[data-demo-gift]"));
+        const giftNames = cards.map((card) =>
+          card.querySelector(".demo-gift__name").textContent.trim()
+        );
         const amounts = [0, 0, 0];
         let playing = false;
+        let userTookOver = false;
+        let toastTimer = null;
 
         const today = new Date();
         const todayLabel =
@@ -1644,10 +1727,20 @@
             const btn = card.querySelector("[data-demo-btn]");
             btn.disabled = used >= MAX;
           });
+          resetBtn.classList.toggle("is-visible", used > 0);
         }
 
         function setStatus(html) {
           statusEl.innerHTML = html;
+        }
+
+        function showToast(giftName) {
+          toastSub.textContent = giftName ? giftName + "에 후원했어요" : "";
+          toastEl.classList.add("is-visible");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            toastEl.classList.remove("is-visible");
+          }, 1800);
         }
 
         function wait(ms) {
@@ -1669,6 +1762,7 @@
           card.classList.add("is-active");
           moveCursorTo(btn);
           await wait(500);
+          if (userTookOver) return;
           cursor.classList.add("is-click");
           btn.classList.add("is-pressed");
           await wait(180);
@@ -1676,75 +1770,121 @@
           btn.classList.remove("is-pressed");
         }
 
+        function fundGift(index, fromUser) {
+          if (total() + UNIT > MAX) {
+            setStatus("이미 <strong>최대 3만원</strong>까지 선물했어요.");
+            if (fromUser) {
+              toastSub.textContent = "한도에 도달했어요";
+              toastEl.querySelector("strong").textContent = "더 이상 선물할 수 없어요";
+              toastEl.classList.add("is-visible");
+              clearTimeout(toastTimer);
+              toastTimer = setTimeout(() => {
+                toastEl.classList.remove("is-visible");
+                toastEl.querySelector("strong").textContent = "1만원 선물하셨습니다!";
+              }, 1800);
+            }
+            return false;
+          }
+
+          amounts[index] += UNIT;
+          cards.forEach((c) => c.classList.remove("is-active"));
+          cards[index].classList.add("is-active");
+          renderDemo();
+
+          if (fromUser) {
+            toastEl.querySelector("strong").textContent = "1만원 선물하셨습니다!";
+            showToast(giftNames[index]);
+            const left = MAX - total();
+            if (left <= 0) {
+              setStatus(
+                "<strong>1만원 선물하셨습니다!</strong> 한도 도달 · 합계 <strong>" +
+                  formatWon(total()) +
+                  "</strong>"
+              );
+            } else {
+              setStatus(
+                "<strong>1만원 선물하셨습니다!</strong> 남은 한도 <strong>" +
+                  formatWon(left) +
+                  "</strong> · 같은 선물에도 또 눌러 보세요"
+              );
+            }
+          }
+          return true;
+        }
+
+        function resetDemo() {
+          amounts[0] = 0;
+          amounts[1] = 0;
+          amounts[2] = 0;
+          cards.forEach((c) => c.classList.remove("is-active"));
+          cursor.classList.remove("is-visible", "is-click");
+          toastEl.classList.remove("is-visible");
+          renderDemo();
+          setStatus("선물하기 버튼을 눌러 체험해 보세요.");
+        }
+
         async function playLoop() {
           if (playing) return;
           playing = true;
-          while (true) {
-            amounts[0] = 0;
-            amounts[1] = 0;
-            amounts[2] = 0;
-            cards.forEach((c) => c.classList.remove("is-active"));
-            cursor.classList.remove("is-visible", "is-click");
-            renderDemo();
-            setStatus("오늘 생일인 <strong>홍길동</strong>의 목록을 보고 있어요…");
+          while (!userTookOver) {
+            resetDemo();
+            setStatus("예시: 오늘 생일인 <strong>홍길동</strong>의 목록을 보고 있어요…");
             await wait(1200);
+            if (userTookOver) break;
 
             const steps = [
-              { index: 0, text: "플스6에 <strong>+1만원</strong> 후원!" },
+              { index: 0, text: "플스6에 <strong>+1만원</strong> 후원! 직접도 눌러 보세요." },
               {
                 index: 0,
-                text: "같은 선물(플스6)에 <strong>또 +1만원</strong>! 중복 후원 가능해요.",
+                text: "같은 선물에도 <strong>또 +1만원</strong>! 버튼을 직접 눌러 체험해 보세요.",
               },
-              { index: 1, text: "닌텐도스위치에 <strong>+1만원</strong> 후원!" },
+              { index: 1, text: "닌텐도스위치에 <strong>+1만원</strong> · 이제 직접 눌러 보세요!" },
             ];
 
             for (const step of steps) {
+              if (userTookOver) break;
               const card = cards[step.index];
               const btn = card.querySelector("[data-demo-btn]");
-              setStatus("선물하기 버튼을 눌러요…");
+              setStatus("선물하기 버튼을 눌러요… (직접 눌러도 돼요)");
               await clickButton(btn, card);
-              if (total() + UNIT <= MAX) {
-                amounts[step.index] += UNIT;
-                renderDemo();
+              if (userTookOver) break;
+              if (fundGift(step.index, false)) {
                 setStatus(step.text);
               }
               await wait(1200);
             }
 
+            if (userTookOver) break;
             setStatus(
-              "한도 도달! 같은 선물에도 1만원씩 중복 가능하고, 합계는 <strong>최대 3만원</strong>이에요."
+              "직접 <strong>선물하기</strong>를 눌러 <strong>1만원 선물</strong>을 체험해 보세요!"
             );
-            await wait(2400);
+            await wait(2800);
           }
+          playing = false;
+          cursor.classList.remove("is-visible", "is-click");
         }
 
         cards.forEach((card, index) => {
           const btn = card.querySelector("[data-demo-btn]");
           btn.addEventListener("click", () => {
-            if (total() + UNIT > MAX) {
-              setStatus("이미 <strong>최대 3만원</strong>까지 후원했어요.");
-              return;
-            }
-            amounts[index] += UNIT;
-            cards.forEach((c) => c.classList.remove("is-active"));
-            card.classList.add("is-active");
-            renderDemo();
-            const sameGift = amounts[index] > UNIT ? " (같은 선물 중복 후원)" : "";
-            setStatus(
-              "직접 눌러봤어요" +
-                sameGift +
-                "! 합계 <strong>" +
-                formatWon(total()) +
-                "</strong>"
-            );
+            userTookOver = true;
+            cursor.classList.remove("is-visible", "is-click");
+            btn.classList.add("is-pressed");
+            setTimeout(() => btn.classList.remove("is-pressed"), 160);
+            fundGift(index, true);
           });
+        });
+
+        resetBtn.addEventListener("click", () => {
+          userTookOver = true;
+          resetDemo();
         });
 
         renderDemo();
         if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           playLoop();
         } else {
-          setStatus("같은 선물에도 1만원씩 중복으로, 최대 3만원까지 후원해 보세요.");
+          setStatus("선물하기 버튼을 눌러 1만원 선물을 체험해 보세요.");
         }
       })();
     })();
