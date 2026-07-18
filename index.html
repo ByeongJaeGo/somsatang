@@ -354,6 +354,50 @@
 
     .field {
       margin-bottom: 18px;
+      position: relative;
+    }
+
+    .email-suggest {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% - 10px);
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(80, 60, 90, 0.12);
+      overflow: hidden;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .email-suggest.is-open {
+      display: block;
+    }
+
+    .email-suggest button {
+      display: block;
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 12px 16px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .email-suggest button:hover,
+    .email-suggest button.is-active {
+      background: rgba(244, 184, 200, 0.22);
+    }
+
+    .email-suggest button span {
+      color: #c45a7a;
+      font-weight: 500;
     }
 
     .field label {
@@ -646,7 +690,8 @@
         <form id="form-register" novalidate>
           <div class="field">
             <label for="email">이메일</label>
-            <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required />
+            <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="off" required />
+            <div class="email-suggest" id="email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
           </div>
           <div class="field">
             <label for="birthday">생년월일</label>
@@ -714,6 +759,122 @@
         input.addEventListener("click", () => input.select());
       });
 
+      const emailInput = document.getElementById("email");
+      const emailSuggest = document.getElementById("email-suggest");
+      const emailDomains = [
+        "gmail.com",
+        "naver.com",
+        "daum.net",
+        "kakao.com",
+        "hanmail.net",
+        "nate.com",
+        "hotmail.com",
+        "outlook.com",
+        "icloud.com",
+        "yahoo.com",
+      ];
+      let activeSuggestIndex = -1;
+
+      function closeEmailSuggest() {
+        emailSuggest.classList.remove("is-open");
+        emailSuggest.innerHTML = "";
+        activeSuggestIndex = -1;
+      }
+
+      function getEmailParts(value) {
+        const at = value.indexOf("@");
+        if (at < 0) return null;
+        return {
+          local: value.slice(0, at),
+          domain: value.slice(at + 1),
+        };
+      }
+
+      function renderEmailSuggest(local, domainQuery) {
+        if (!local) {
+          closeEmailSuggest();
+          return;
+        }
+
+        const query = domainQuery.toLowerCase();
+        const matches = emailDomains.filter((domain) => domain.startsWith(query));
+        if (!matches.length) {
+          closeEmailSuggest();
+          return;
+        }
+
+        emailSuggest.innerHTML = matches
+          .map(
+            (domain, index) =>
+              '<button type="button" role="option" data-index="' +
+              index +
+              '" data-email="' +
+              escapeHtml(local + "@" + domain) +
+              '">' +
+              escapeHtml(local) +
+              "@<span>" +
+              escapeHtml(domain) +
+              "</span></button>"
+          )
+          .join("");
+        emailSuggest.classList.add("is-open");
+        activeSuggestIndex = -1;
+      }
+
+      function applyEmailSuggest(email) {
+        emailInput.value = email;
+        closeEmailSuggest();
+        emailInput.focus();
+      }
+
+      function updateActiveSuggest(nextIndex) {
+        const buttons = emailSuggest.querySelectorAll("button");
+        if (!buttons.length) return;
+        buttons.forEach((btn) => btn.classList.remove("is-active"));
+        activeSuggestIndex = (nextIndex + buttons.length) % buttons.length;
+        buttons[activeSuggestIndex].classList.add("is-active");
+        buttons[activeSuggestIndex].scrollIntoView({ block: "nearest" });
+      }
+
+      emailInput.addEventListener("input", () => {
+        const parts = getEmailParts(emailInput.value.trim());
+        if (!parts) {
+          closeEmailSuggest();
+          return;
+        }
+        renderEmailSuggest(parts.local, parts.domain);
+      });
+
+      emailInput.addEventListener("keydown", (e) => {
+        if (!emailSuggest.classList.contains("is-open")) return;
+        const buttons = emailSuggest.querySelectorAll("button");
+        if (!buttons.length) return;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          updateActiveSuggest(activeSuggestIndex + 1);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          updateActiveSuggest(activeSuggestIndex - 1);
+        } else if (e.key === "Enter" && activeSuggestIndex >= 0) {
+          e.preventDefault();
+          applyEmailSuggest(buttons[activeSuggestIndex].dataset.email);
+        } else if (e.key === "Escape") {
+          closeEmailSuggest();
+        }
+      });
+
+      emailSuggest.addEventListener("mousedown", (e) => {
+        const btn = e.target.closest("button[data-email]");
+        if (!btn) return;
+        e.preventDefault();
+        applyEmailSuggest(btn.dataset.email);
+      });
+
+      emailInput.addEventListener("blur", () => {
+        setTimeout(closeEmailSuggest, 120);
+      });
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const email = document.getElementById("email").value.trim();
@@ -732,6 +893,7 @@
 
       document.getElementById("restart").addEventListener("click", () => {
         form.reset();
+        closeEmailSuggest();
         show("register");
       });
     })();
