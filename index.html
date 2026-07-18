@@ -1270,21 +1270,15 @@
         <div class="demo__cursor" id="demo-cursor" aria-hidden="true"></div>
       </section>
 
-      <!-- 회원가입 / 로그인 -->
-      <section id="panel-auth" class="panel is-active" aria-labelledby="auth-title">
-        <div class="auth-tabs" role="tablist">
-          <button type="button" class="is-active" id="tab-login" role="tab" aria-selected="true">로그인</button>
-          <button type="button" id="tab-signup" role="tab" aria-selected="false">회원가입</button>
-        </div>
-
-        <h2 id="auth-title" class="panel__title">로그인</h2>
-        <p class="panel__desc" id="auth-desc">계정으로 들어가서 생일과 친구를 확인해요.</p>
+      <!-- 출시 알림 받기 -->
+      <section id="panel-waitlist" class="panel is-active" aria-labelledby="waitlist-title">
+        <h2 id="waitlist-title" class="panel__title">출시 알림 받기</h2>
+        <p class="panel__desc">이메일과 생일만 남겨 주세요. 출시되면 바로 알려드릴게요.</p>
         <p class="notice">서비스가 정식 출시되면 등록하신 이메일로 <strong>출시 알림</strong>을 보내드려요.</p>
         <p class="notice notice--event">
-          로그인 후 원하는 생일 선물 3개를 등록하면,<br />
-          <strong>선착순 100분</strong> 중 추첨을 통해 <strong>스타벅스 기프티콘</strong>을 드립니다.
+          사전 등록자 중 <strong>선착순 100분</strong>을 추첨해 <strong>스타벅스 기프티콘</strong>을 드립니다.
           <ul class="event-detail">
-            <li>대상: 로그인 후 원하는 생일 선물 3개 등록자 (선착순 100분 · 1인 1회)</li>
+            <li>대상: 이메일·생일 사전 등록 완료자 (선착순 100분 · 1인 1회)</li>
             <li>당첨 발표: 출시 알림과 함께 등록 이메일로 개별 안내</li>
             <li>기간: 정식 출시 전까지 · 자세한 내용은 추후 안내</li>
           </ul>
@@ -1297,34 +1291,13 @@
           <p class="share__hint">링크를 드래그하거나 눌러서 복사하세요</p>
         </div>
 
-        <p class="form-error" id="auth-error" role="alert"></p>
+        <p class="form-error" id="waitlist-error" role="alert"></p>
 
-        <form id="form-login" novalidate>
+        <form id="form-waitlist" novalidate>
           <div class="field">
-            <label for="login-email">이메일</label>
-            <input id="login-email" name="login-email" type="email" placeholder="you@email.com" autocomplete="email" required />
-            <div class="email-suggest" id="login-email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
-          </div>
-          <div class="field">
-            <label for="login-password">비밀번호</label>
-            <input id="login-password" name="login-password" type="password" placeholder="6자 이상" autocomplete="current-password" required minlength="6" />
-          </div>
-          <button type="submit" class="btn btn--primary">로그인</button>
-        </form>
-
-        <form id="form-signup" class="hidden" novalidate>
-          <div class="field">
-            <label for="signup-name">닉네임</label>
-            <input id="signup-name" name="signup-name" type="text" placeholder="어떻게 불러드릴까요?" autocomplete="nickname" required />
-          </div>
-          <div class="field">
-            <label for="signup-email">이메일</label>
-            <input id="signup-email" name="signup-email" type="email" placeholder="you@email.com" autocomplete="off" required />
-            <div class="email-suggest" id="signup-email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
-          </div>
-          <div class="field">
-            <label for="signup-password">비밀번호</label>
-            <input id="signup-password" name="signup-password" type="password" placeholder="6자 이상" autocomplete="new-password" required minlength="6" />
+            <label for="email">이메일</label>
+            <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="off" required />
+            <div class="email-suggest" id="email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
           </div>
           <div class="field">
             <label for="birth-year">생년월일</label>
@@ -1340,116 +1313,27 @@
               </select>
             </div>
           </div>
-          <button type="submit" class="btn btn--primary">회원가입</button>
+          <button type="submit" class="btn btn--primary">출시 알림 받기</button>
         </form>
       </section>
 
-      <!-- 홈 (로그인 후) -->
-      <section id="panel-home" class="panel" aria-labelledby="home-title">
-        <div class="home-top">
-          <div>
-            <h2 id="home-title">안녕하세요, <span id="home-name">친구</span>님</h2>
-            <p id="home-email"></p>
+      <!-- 등록 완료 -->
+      <section id="panel-done" class="panel" aria-labelledby="done-title">
+        <div class="done">
+          <div class="done__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
-          <button type="button" class="btn btn--tiny" id="logout-btn">로그아웃</button>
+          <h2 id="done-title">등록됐어요</h2>
+          <p>서비스 출시 시 알림을 보내드리고,<br />이벤트 추첨 대상에 포함됐어요.</p>
+          <dl class="summary" id="summary"></dl>
+          <div class="share">
+            <span class="share__badge">친구에게 알려주기</span>
+            <p class="share__text">내 사이트 링크 사이트에 넣고<br />친구에게 공유하세요!</p>
+            <input type="text" class="share__link" readonly value="https://somsatang.vercel.app" aria-label="somsatang 사이트 링크" />
+            <p class="share__hint">링크를 드래그하거나 눌러서 복사하세요</p>
+          </div>
+          <button type="button" class="btn btn--primary" id="restart">다시 등록하기</button>
         </div>
-
-        <div class="dday-card">
-          <div class="dday-card__label">내 생일까지</div>
-          <div class="dday-card__value" id="my-dday">D-DAY</div>
-          <div class="dday-card__date" id="my-birthday">생일 미등록</div>
-        </div>
-
-        <div class="section-block">
-          <div class="section-block__head">
-            <h3>내가 원하는 선물</h3>
-            <button type="button" class="btn btn--tiny" id="open-gifts-btn">등록하기</button>
-          </div>
-          <div class="gift-list" id="gift-list"></div>
-          <div class="empty-state" id="gift-empty">아직 등록한 선물이 없어요. 받고 싶은 선물 3개를 등록해 보세요.</div>
-          <p class="panel__desc" style="margin-top: 8px; margin-bottom: 0">등록 후에도 <strong>수정하기</strong>로 언제든 바꿀 수 있어요.</p>
-        </div>
-
-        <div class="section-block">
-          <div class="section-block__head">
-            <h3>내 친구</h3>
-          </div>
-          <div class="friend-list" id="friend-list"></div>
-          <div class="empty-state" id="friend-empty">아직 등록된 친구가 없어요.</div>
-
-          <div class="friend-add">
-            <p class="panel__desc" style="margin-bottom: 12px">이미 가입한 친구 이메일로 추가할 수 있어요.</p>
-            <p class="form-error" id="friend-error" role="alert"></p>
-            <div class="friend-add__row">
-              <div class="field" style="margin-bottom: 0">
-                <label for="friend-email" class="hidden">친구 이메일</label>
-                <input id="friend-email" type="email" placeholder="friend@email.com" autocomplete="off" />
-                <div class="email-suggest" id="friend-email-suggest" role="listbox" aria-label="이메일 도메인 추천"></div>
-              </div>
-              <button type="button" class="btn btn--primary" id="add-friend-btn">추가</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 선물 3개 등록 -->
-      <section id="panel-gifts" class="panel" aria-labelledby="gifts-title">
-        <h2 id="gifts-title" class="panel__title">원하는 선물 3개</h2>
-        <p class="panel__desc">선물 이름, 가격, 구입처 링크를 적어 주세요. 나중에 언제든 수정할 수 있어요.</p>
-        <p class="form-error" id="gifts-error" role="alert"></p>
-
-        <form id="form-gifts" novalidate>
-          <div class="gift-slot">
-            <div class="gift-slot__head"><strong>1</strong> 첫 번째 선물</div>
-            <div class="field">
-              <label for="gift1-name">선물 이름</label>
-              <input id="gift1-name" type="text" placeholder="예: 미니 향수" required />
-            </div>
-            <div class="field">
-              <label for="gift1-price">가격 (원)</label>
-              <input id="gift1-price" type="number" min="1000" step="1000" placeholder="예: 30000" required />
-            </div>
-            <div class="field">
-              <label for="gift1-link">구입처 링크</label>
-              <input id="gift1-link" type="url" placeholder="https://..." required />
-            </div>
-          </div>
-
-          <div class="gift-slot">
-            <div class="gift-slot__head"><strong>2</strong> 두 번째 선물</div>
-            <div class="field">
-              <label for="gift2-name">선물 이름</label>
-              <input id="gift2-name" type="text" placeholder="예: 카페 기프티콘" required />
-            </div>
-            <div class="field">
-              <label for="gift2-price">가격 (원)</label>
-              <input id="gift2-price" type="number" min="1000" step="1000" placeholder="예: 10000" required />
-            </div>
-            <div class="field">
-              <label for="gift2-link">구입처 링크</label>
-              <input id="gift2-link" type="url" placeholder="https://..." required />
-            </div>
-          </div>
-
-          <div class="gift-slot">
-            <div class="gift-slot__head"><strong>3</strong> 세 번째 선물</div>
-            <div class="field">
-              <label for="gift3-name">선물 이름</label>
-              <input id="gift3-name" type="text" placeholder="예: 다이어리" required />
-            </div>
-            <div class="field">
-              <label for="gift3-price">가격 (원)</label>
-              <input id="gift3-price" type="number" min="1000" step="1000" placeholder="예: 20000" required />
-            </div>
-            <div class="field">
-              <label for="gift3-link">구입처 링크</label>
-              <input id="gift3-link" type="url" placeholder="https://..." required />
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn--primary">저장하기</button>
-          <button type="button" class="btn btn--ghost" id="gifts-back-btn">홈으로</button>
-        </form>
       </section>
     </div>
 
@@ -1461,8 +1345,7 @@
 
   <script>
     (function () {
-      const USERS_KEY = "somsatang_users_v1";
-      const SESSION_KEY = "somsatang_session_v1";
+      const WAITLIST_KEY = "somsatang_waitlist_v1";
       const emailDomains = [
         "gmail.com",
         "naver.com",
@@ -1476,28 +1359,17 @@
         "yahoo.com",
       ];
 
-      const panelAuth = document.getElementById("panel-auth");
-      const panelHome = document.getElementById("panel-home");
-      const panelGifts = document.getElementById("panel-gifts");
-      const tabLogin = document.getElementById("tab-login");
-      const tabSignup = document.getElementById("tab-signup");
-      const formLogin = document.getElementById("form-login");
-      const formSignup = document.getElementById("form-signup");
-      const formGifts = document.getElementById("form-gifts");
-      const authTitle = document.getElementById("auth-title");
-      const authDesc = document.getElementById("auth-desc");
-      const authError = document.getElementById("auth-error");
-      const friendError = document.getElementById("friend-error");
-      const giftsError = document.getElementById("gifts-error");
+      const panelWaitlist = document.getElementById("panel-waitlist");
+      const panelDone = document.getElementById("panel-done");
+      const form = document.getElementById("form-waitlist");
+      const waitlistError = document.getElementById("waitlist-error");
       const birthYear = document.getElementById("birth-year");
       const birthMonth = document.getElementById("birth-month");
       const birthDay = document.getElementById("birth-day");
-      const openGiftsBtn = document.getElementById("open-gifts-btn");
 
       function show(panel) {
-        panelAuth.classList.toggle("is-active", panel === "auth");
-        panelHome.classList.toggle("is-active", panel === "home");
-        panelGifts.classList.toggle("is-active", panel === "gifts");
+        panelWaitlist.classList.toggle("is-active", panel === "waitlist");
+        panelDone.classList.toggle("is-active", panel === "done");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -1510,67 +1382,34 @@
       }
 
       function formatDate(iso) {
-        if (!iso) return "생일 미등록";
         const [y, m, d] = iso.split("-");
         return y + "년 " + Number(m) + "월 " + Number(d) + "일";
-      }
-
-      function getUsers() {
-        try {
-          return JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
-        } catch (e) {
-          return {};
-        }
-      }
-
-      function saveUsers(users) {
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-      }
-
-      function getSessionEmail() {
-        return localStorage.getItem(SESSION_KEY) || "";
-      }
-
-      function setSession(email) {
-        if (email) localStorage.setItem(SESSION_KEY, email);
-        else localStorage.removeItem(SESSION_KEY);
       }
 
       function normalizeEmail(email) {
         return String(email || "").trim().toLowerCase();
       }
 
-      function showError(el, message) {
+      function showError(message) {
         if (!message) {
-          el.textContent = "";
-          el.classList.remove("is-visible");
+          waitlistError.textContent = "";
+          waitlistError.classList.remove("is-visible");
           return;
         }
-        el.textContent = message;
-        el.classList.add("is-visible");
+        waitlistError.textContent = message;
+        waitlistError.classList.add("is-visible");
       }
 
-      function daysUntilBirthday(iso) {
-        if (!iso) return null;
-        const [, m, d] = iso.split("-").map(Number);
-        const today = new Date();
-        const year = today.getFullYear();
-        const next = new Date(year, m - 1, d);
-        next.setHours(0, 0, 0, 0);
-        const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        if (next < start) next.setFullYear(year + 1);
-        return Math.round((next - start) / 86400000);
+      function getWaitlist() {
+        try {
+          return JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
+        } catch (e) {
+          return [];
+        }
       }
 
-      function formatDday(days) {
-        if (days === null || days === undefined) return "미등록";
-        if (days === 0) return "오늘 생일!";
-        return "D-" + days;
-      }
-
-      function getBirthdayValue() {
-        if (!birthYear.value || !birthMonth.value || !birthDay.value) return "";
-        return birthYear.value + "-" + birthMonth.value + "-" + birthDay.value;
+      function saveWaitlist(list) {
+        localStorage.setItem(WAITLIST_KEY, JSON.stringify(list));
       }
 
       function daysInMonth(year, month) {
@@ -1591,6 +1430,11 @@
         if (selectedDay && Number(selectedDay) <= maxDay) {
           birthDay.value = selectedDay;
         }
+      }
+
+      function getBirthdayValue() {
+        if (!birthYear.value || !birthMonth.value || !birthDay.value) return "";
+        return birthYear.value + "-" + birthMonth.value + "-" + birthDay.value;
       }
 
       const currentYear = new Date().getFullYear();
@@ -1703,9 +1547,7 @@
         input.addEventListener("blur", () => setTimeout(closeSuggest, 120));
       }
 
-      setupEmailSuggest("login-email", "login-email-suggest");
-      setupEmailSuggest("signup-email", "signup-email-suggest");
-      setupEmailSuggest("friend-email", "friend-email-suggest");
+      setupEmailSuggest("email", "email-suggest");
 
       const siteUrl = window.location.origin;
       document.querySelectorAll(".share__link").forEach((input) => {
@@ -1714,301 +1556,49 @@
         input.addEventListener("click", () => input.select());
       });
 
-      function setAuthMode(mode) {
-        const isLogin = mode === "login";
-        tabLogin.classList.toggle("is-active", isLogin);
-        tabSignup.classList.toggle("is-active", !isLogin);
-        tabLogin.setAttribute("aria-selected", String(isLogin));
-        tabSignup.setAttribute("aria-selected", String(!isLogin));
-        formLogin.classList.toggle("hidden", !isLogin);
-        formSignup.classList.toggle("hidden", isLogin);
-        authTitle.textContent = isLogin ? "로그인" : "회원가입";
-        authDesc.textContent = isLogin
-          ? "계정으로 들어가서 생일과 친구를 확인해요."
-          : "이메일, 비밀번호, 생일을 등록하고 시작해요.";
-        showError(authError, "");
-      }
-
-      tabLogin.addEventListener("click", () => setAuthMode("login"));
-      tabSignup.addEventListener("click", () => setAuthMode("signup"));
-
-      function formatWon(n) {
-        return Number(n).toLocaleString("ko-KR") + "원";
-      }
-
-      function getUserGifts(user) {
-        return Array.isArray(user.gifts) ? user.gifts : [];
-      }
-
-      function normalizeLink(url) {
-        const value = String(url || "").trim();
-        if (!value) return "";
-        if (/^https?:\/\//i.test(value)) return value;
-        return "https://" + value;
-      }
-
-      function isValidLink(url) {
-        try {
-          const parsed = new URL(url);
-          return parsed.protocol === "http:" || parsed.protocol === "https:";
-        } catch (e) {
-          return false;
-        }
-      }
-
-      function fillGiftForm(gifts) {
-        for (let i = 1; i <= 3; i++) {
-          const gift = gifts[i - 1] || {};
-          document.getElementById("gift" + i + "-name").value = gift.name || "";
-          document.getElementById("gift" + i + "-price").value = gift.price || "";
-          document.getElementById("gift" + i + "-link").value = gift.link || gift.note || "";
-        }
-        showError(giftsError, "");
-      }
-
-      function renderHome(user) {
-        document.getElementById("home-name").textContent = user.name || "친구";
-        document.getElementById("home-email").textContent = user.email;
-        document.getElementById("my-birthday").textContent = formatDate(user.birthday);
-        document.getElementById("my-dday").textContent = formatDday(daysUntilBirthday(user.birthday));
-
-        const gifts = getUserGifts(user);
-        const giftList = document.getElementById("gift-list");
-        const giftEmpty = document.getElementById("gift-empty");
-        openGiftsBtn.textContent = gifts.length === 3 ? "수정하기" : "등록하기";
-        if (gifts.length !== 3) {
-          giftList.innerHTML = "";
-          giftEmpty.style.display = "block";
-        } else {
-          giftEmpty.style.display = "none";
-          giftList.innerHTML = gifts
-            .map(
-              (gift, index) =>
-                '<article class="gift-item">' +
-                '<div class="gift-item__top">' +
-                '<span class="gift-item__num">' +
-                (index + 1) +
-                "</span>" +
-                '<span class="gift-item__name">' +
-                escapeHtml(gift.name) +
-                "</span>" +
-                '<span class="gift-item__price">' +
-                escapeHtml(formatWon(gift.price)) +
-                "</span></div>" +
-                (gift.link
-                  ? '<a class="gift-item__link" href="' +
-                    escapeHtml(gift.link) +
-                    '" target="_blank" rel="noopener">' +
-                    escapeHtml(gift.link) +
-                    "</a>"
-                  : "") +
-                "</article>"
-            )
-            .join("");
-        }
-
-        const users = getUsers();
-        const friendEmails = Array.isArray(user.friends) ? user.friends : [];
-        const friends = friendEmails
-          .map((email) => users[email])
-          .filter(Boolean)
-          .map((friend) => ({
-            ...friend,
-            dday: daysUntilBirthday(friend.birthday),
-          }))
-          .sort((a, b) => {
-            if (a.dday === null) return 1;
-            if (b.dday === null) return -1;
-            return a.dday - b.dday;
-          });
-
-        const list = document.getElementById("friend-list");
-        const empty = document.getElementById("friend-empty");
-        if (!friends.length) {
-          list.innerHTML = "";
-          empty.style.display = "block";
-        } else {
-          empty.style.display = "none";
-          list.innerHTML = friends
-            .map(
-              (friend) =>
-                '<article class="friend-item">' +
-                "<div><strong>" +
-                escapeHtml(friend.name || friend.email) +
-                "</strong><span>" +
-                escapeHtml(formatDate(friend.birthday)) +
-                "</span></div>" +
-                '<div class="friend-item__dday">' +
-                escapeHtml(formatDday(friend.dday)) +
-                "</div></article>"
-            )
-            .join("");
-        }
-        showError(friendError, "");
-        document.getElementById("friend-email").value = "";
-      }
-
-      function enterHome(email) {
-        const users = getUsers();
-        const user = users[email];
-        if (!user) {
-          setSession("");
-          show("auth");
-          return;
-        }
-        setSession(email);
-        renderHome(user);
-        show("home");
-      }
-
-      formSignup.addEventListener("submit", (e) => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
-        showError(authError, "");
-        const name = document.getElementById("signup-name").value.trim();
-        const email = normalizeEmail(document.getElementById("signup-email").value);
-        const password = document.getElementById("signup-password").value;
+        showError("");
+        const email = normalizeEmail(document.getElementById("email").value);
         const birthday = getBirthdayValue();
-
-        if (!name || !email || !password || !birthday) {
-          showError(authError, "닉네임, 이메일, 비밀번호, 생일을 모두 입력해 주세요.");
+        if (!email || !birthday) {
+          showError("이메일과 생일을 모두 입력해 주세요.");
           return;
         }
-        if (password.length < 6) {
-          showError(authError, "비밀번호는 6자 이상이어야 해요.");
-          return;
-        }
-
-        const users = getUsers();
-        if (users[email]) {
-          showError(authError, "이미 가입된 이메일이에요. 로그인해 주세요.");
-          setAuthMode("login");
-          document.getElementById("login-email").value = email;
+        if (!email.includes("@")) {
+          showError("올바른 이메일을 입력해 주세요.");
           return;
         }
 
-        users[email] = {
-          email: email,
-          name: name,
-          password: password,
-          birthday: birthday,
-          friends: [],
-          gifts: [],
-          createdAt: new Date().toISOString(),
-        };
-        saveUsers(users);
-        enterHome(email);
+        const list = getWaitlist();
+        const existing = list.find((item) => item.email === email);
+        if (existing) {
+          existing.birthday = birthday;
+          existing.updatedAt = new Date().toISOString();
+        } else {
+          list.push({
+            email: email,
+            birthday: birthday,
+            createdAt: new Date().toISOString(),
+          });
+        }
+        saveWaitlist(list);
+
+        document.getElementById("summary").innerHTML =
+          "<dt>이메일</dt><dd>" +
+          escapeHtml(email) +
+          "</dd><dt>생일</dt><dd>" +
+          formatDate(birthday) +
+          "</dd>";
+        show("done");
       });
 
-      formLogin.addEventListener("submit", (e) => {
-        e.preventDefault();
-        showError(authError, "");
-        const email = normalizeEmail(document.getElementById("login-email").value);
-        const password = document.getElementById("login-password").value;
-        if (!email || !password) {
-          showError(authError, "이메일과 비밀번호를 입력해 주세요.");
-          return;
-        }
-
-        const users = getUsers();
-        const user = users[email];
-        if (!user || user.password !== password) {
-          showError(authError, "이메일 또는 비밀번호가 맞지 않아요.");
-          return;
-        }
-        enterHome(email);
-      });
-
-      document.getElementById("logout-btn").addEventListener("click", () => {
-        setSession("");
-        formLogin.reset();
-        formSignup.reset();
-        formGifts.reset();
+      document.getElementById("restart").addEventListener("click", () => {
+        form.reset();
         refreshBirthDays();
-        setAuthMode("login");
-        show("auth");
+        showError("");
+        show("waitlist");
       });
-
-      openGiftsBtn.addEventListener("click", () => {
-        const sessionEmail = getSessionEmail();
-        const user = getUsers()[sessionEmail];
-        if (!user) return;
-        fillGiftForm(getUserGifts(user));
-        show("gifts");
-      });
-
-      document.getElementById("gifts-back-btn").addEventListener("click", () => {
-        const sessionEmail = getSessionEmail();
-        if (sessionEmail) enterHome(sessionEmail);
-        else show("auth");
-      });
-
-      formGifts.addEventListener("submit", (e) => {
-        e.preventDefault();
-        showError(giftsError, "");
-        const sessionEmail = getSessionEmail();
-        const users = getUsers();
-        const me = users[sessionEmail];
-        if (!me) return;
-
-        const gifts = [1, 2, 3].map((n) => ({
-          name: document.getElementById("gift" + n + "-name").value.trim(),
-          price: Number(document.getElementById("gift" + n + "-price").value),
-          link: normalizeLink(document.getElementById("gift" + n + "-link").value),
-        }));
-
-        if (gifts.some((g) => !g.name || !g.price || g.price < 1000 || !g.link)) {
-          showError(giftsError, "선물 이름, 가격(1,000원 이상), 구입처 링크를 모두 입력해 주세요.");
-          return;
-        }
-        if (gifts.some((g) => !isValidLink(g.link))) {
-          showError(giftsError, "구입처 링크 형식을 확인해 주세요. (예: https://...)");
-          return;
-        }
-
-        me.gifts = gifts;
-        users[sessionEmail] = me;
-        saveUsers(users);
-        enterHome(sessionEmail);
-      });
-
-      document.getElementById("add-friend-btn").addEventListener("click", () => {
-        showError(friendError, "");
-        const sessionEmail = getSessionEmail();
-        const users = getUsers();
-        const me = users[sessionEmail];
-        if (!me) return;
-
-        const friendEmail = normalizeEmail(document.getElementById("friend-email").value);
-        if (!friendEmail) {
-          showError(friendError, "친구 이메일을 입력해 주세요.");
-          return;
-        }
-        if (friendEmail === sessionEmail) {
-          showError(friendError, "자기 자신은 친구로 추가할 수 없어요.");
-          return;
-        }
-        if (!users[friendEmail]) {
-          showError(friendError, "아직 somsatang에 가입하지 않은 이메일이에요.");
-          return;
-        }
-        me.friends = Array.isArray(me.friends) ? me.friends : [];
-        if (me.friends.indexOf(friendEmail) >= 0) {
-          showError(friendError, "이미 등록된 친구예요.");
-          return;
-        }
-        me.friends.push(friendEmail);
-        users[sessionEmail] = me;
-        saveUsers(users);
-        renderHome(me);
-      });
-
-      const sessionEmail = getSessionEmail();
-      if (sessionEmail && getUsers()[sessionEmail]) {
-        enterHome(sessionEmail);
-      } else {
-        setAuthMode("login");
-        show("auth");
-      }
 
       (function setupDemoAnimation() {
         const UNIT = 10000;
@@ -2100,18 +1690,12 @@
             await wait(1200);
 
             const steps = [
-              {
-                index: 0,
-                text: "플스6에 <strong>+1만원</strong> 후원!",
-              },
+              { index: 0, text: "플스6에 <strong>+1만원</strong> 후원!" },
               {
                 index: 0,
                 text: "같은 선물(플스6)에 <strong>또 +1만원</strong>! 중복 후원 가능해요.",
               },
-              {
-                index: 1,
-                text: "닌텐도스위치에 <strong>+1만원</strong> 후원!",
-              },
+              { index: 1, text: "닌텐도스위치에 <strong>+1만원</strong> 후원!" },
             ];
 
             for (const step of steps) {
@@ -2145,10 +1729,7 @@
             cards.forEach((c) => c.classList.remove("is-active"));
             card.classList.add("is-active");
             renderDemo();
-            const sameGift =
-              amounts[index] > UNIT
-                ? " (같은 선물 중복 후원)"
-                : "";
+            const sameGift = amounts[index] > UNIT ? " (같은 선물 중복 후원)" : "";
             setStatus(
               "직접 눌러봤어요" +
                 sameGift +
