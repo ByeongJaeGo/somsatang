@@ -1066,12 +1066,70 @@
       font-weight: 500;
     }
 
-    .demo__hint {
-      margin: 0 0 12px;
-      text-align: center;
-      font-size: 0.86rem;
+    .demo__status.is-attention {
       color: #c45a7a;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1rem;
+      animation: demoHintPulse 1.35s ease-in-out infinite;
+      text-shadow: 0 0 12px rgba(196, 90, 122, 0.35);
+    }
+
+    .demo__hint {
+      margin: 0 0 14px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #c45a7a;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      animation: demoHintPulse 1.35s ease-in-out infinite;
+      text-shadow: 0 0 14px rgba(196, 90, 122, 0.4);
+      transform-origin: center;
+    }
+
+    .demo__hint::before,
+    .demo__hint::after {
+      content: "✦";
+      display: inline-block;
+      margin: 0 0.35em;
+      animation: demoSparkle 1.35s ease-in-out infinite;
+      opacity: 0.85;
+    }
+
+    .demo__hint::after {
+      animation-delay: 0.35s;
+    }
+
+    @keyframes demoHintPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.88;
+        filter: brightness(1);
+      }
+      50% {
+        transform: scale(1.12);
+        opacity: 1;
+        filter: brightness(1.15);
+      }
+    }
+
+    @keyframes demoSparkle {
+      0%, 100% {
+        transform: scale(0.75) rotate(0deg);
+        opacity: 0.45;
+      }
+      50% {
+        transform: scale(1.25) rotate(18deg);
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .demo__hint,
+      .demo__hint::before,
+      .demo__hint::after,
+      .demo__status.is-attention {
+        animation: none;
+      }
     }
 
     .demo-toast {
@@ -1279,7 +1337,7 @@
           오늘 생일인 친구 <strong>홍길동</strong>의 선물 목록이에요.<br />
           <strong>선물하기</strong>를 직접 눌러 1만원씩 후원해 보세요. 같은 선물도 중복 가능, <strong>최대 3만원</strong>까지예요.
         </p>
-        <p class="demo__hint">아래 버튼을 눌러 직접 체험해 보세요</p>
+        <p class="demo__hint">선물하기 버튼을 눌러 체험해 보세요</p>
 
         <div class="demo__user">
           <div class="demo__avatar" aria-hidden="true"></div>
@@ -1336,7 +1394,7 @@
           <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
         </article>
 
-        <p class="demo__status" id="demo-status">선물하기 버튼을 눌러 체험해 보세요.</p>
+        <p class="demo__status is-attention" id="demo-status">선물하기 버튼을 눌러 체험해 보세요.</p>
         <button type="button" class="demo__reset" id="demo-reset">처음부터 다시 체험하기</button>
         <div class="demo-toast" id="demo-toast" role="status" aria-live="polite">
           <strong>1만원 선물하셨습니다!</strong>
@@ -1731,6 +1789,11 @@
 
         function setStatus(html) {
           statusEl.innerHTML = html;
+          const plain = statusEl.textContent || "";
+          statusEl.classList.toggle(
+            "is-attention",
+            plain.includes("체험해 보세요") || plain.includes("눌러요")
+          );
         }
 
         function showToast(title, sub) {
