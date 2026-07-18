@@ -860,6 +860,221 @@
       font-weight: 300;
     }
 
+    .demo {
+      margin-top: 36px;
+      padding: 24px 18px 20px;
+      background: rgba(255, 249, 252, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo__badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(135deg, #6a9bbb, #5a9a88);
+      border-radius: 999px;
+      padding: 5px 12px;
+      margin-bottom: 12px;
+    }
+
+    .demo__title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .demo__desc {
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      margin-bottom: 18px;
+      line-height: 1.55;
+    }
+
+    .demo__user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-radius: 14px;
+      background: rgba(168, 212, 230, 0.2);
+      border: 1px solid var(--line);
+    }
+
+    .demo__avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--sky));
+      flex-shrink: 0;
+    }
+
+    .demo__user strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    .demo__user span {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+
+    .demo__budget {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--line);
+    }
+
+    .demo__budget-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    .demo__budget-value {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: #c45a7a;
+    }
+
+    .demo-gift {
+      position: relative;
+      margin-bottom: 10px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+
+    .demo-gift.is-active {
+      border-color: rgba(196, 90, 122, 0.45);
+      box-shadow: 0 8px 24px rgba(196, 90, 122, 0.15);
+      transform: scale(1.02);
+    }
+
+    .demo-gift__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .demo-gift__name {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .demo-gift__price {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      margin-top: 3px;
+    }
+
+    .demo-gift__funded {
+      font-family: var(--font-display);
+      color: #5a8fad;
+      white-space: nowrap;
+    }
+
+    .demo-gift__bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(28, 36, 48, 0.08);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .demo-gift__fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #d46b8a, #6a9bbb);
+      transition: width 0.45s ease;
+    }
+
+    .demo-gift__btn {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: default;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .demo-gift__btn.is-pressed {
+      background: linear-gradient(135deg, #d46b8a, #6a9bbb);
+      color: #fff;
+      border-color: transparent;
+      transform: scale(0.97);
+    }
+
+    .demo-gift__btn:disabled {
+      opacity: 0.45;
+    }
+
+    .demo__status {
+      margin-top: 14px;
+      min-height: 2.6em;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .demo__status strong {
+      color: #c45a7a;
+      font-weight: 500;
+    }
+
+    .demo__cursor {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #c45a7a;
+      background: rgba(244, 184, 200, 0.35);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.7);
+      transition: left 0.55s ease, top 0.55s ease, opacity 0.25s, transform 0.2s;
+      box-shadow: 0 0 0 6px rgba(196, 90, 122, 0.12);
+    }
+
+    .demo__cursor.is-visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .demo__cursor.is-click {
+      transform: translate(-50%, -50%) scale(0.75);
+      background: rgba(196, 90, 122, 0.45);
+    }
+
     @keyframes rise {
       from {
         opacity: 0;
@@ -1143,6 +1358,73 @@
         </form>
       </section>
     </div>
+
+    <section class="demo" id="demo-flow" aria-label="테스트 사용 데모">
+      <span class="demo__badge">테스트 데모</span>
+      <h2 class="demo__title">이렇게 선물해요</h2>
+      <p class="demo__desc">
+        임시 사용자가 원하는 선물 3개를 올려두면,<br />
+        선물자는 1만원씩 눌러 <strong>최대 3만원</strong>까지 후원할 수 있어요.
+      </p>
+
+      <div class="demo__user">
+        <div class="demo__avatar" aria-hidden="true"></div>
+        <div>
+          <strong>임시 사용자 · 민수</strong>
+          <span>생일까지 D-12 · 원하는 선물 3개 등록됨</span>
+        </div>
+      </div>
+
+      <div class="demo__budget">
+        <div>
+          <div class="demo__budget-label">선물자 후원 합계</div>
+          <div class="demo__budget-value" id="demo-total">0원</div>
+        </div>
+        <div style="text-align: right">
+          <div class="demo__budget-label">남은 한도</div>
+          <div class="demo__budget-value" id="demo-left">30,000원</div>
+        </div>
+      </div>
+
+      <article class="demo-gift" data-demo-gift="0">
+        <div class="demo-gift__top">
+          <div>
+            <div class="demo-gift__name">플스6</div>
+            <div class="demo-gift__price">희망가 698,000원</div>
+          </div>
+          <div class="demo-gift__funded" data-funded>0원</div>
+        </div>
+        <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+        <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+      </article>
+
+      <article class="demo-gift" data-demo-gift="1">
+        <div class="demo-gift__top">
+          <div>
+            <div class="demo-gift__name">닌텐도스위치</div>
+            <div class="demo-gift__price">희망가 359,000원</div>
+          </div>
+          <div class="demo-gift__funded" data-funded>0원</div>
+        </div>
+        <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+        <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+      </article>
+
+      <article class="demo-gift" data-demo-gift="2">
+        <div class="demo-gift__top">
+          <div>
+            <div class="demo-gift__name">롤링스 야구글러브</div>
+            <div class="demo-gift__price">희망가 189,000원</div>
+          </div>
+          <div class="demo-gift__funded" data-funded>0원</div>
+        </div>
+        <div class="demo-gift__bar"><div class="demo-gift__fill" data-fill></div></div>
+        <button type="button" class="demo-gift__btn" data-demo-btn>선물하기 +1만원</button>
+      </article>
+
+      <p class="demo__status" id="demo-status">선물자가 목록을 보고 있어요…</p>
+      <div class="demo__cursor" id="demo-cursor" aria-hidden="true"></div>
+    </section>
 
     <footer class="beta">
       <span class="beta__badge">Beta 서비스</span>
@@ -1700,6 +1982,128 @@
         setAuthMode("login");
         show("auth");
       }
+
+      (function setupDemoAnimation() {
+        const UNIT = 10000;
+        const MAX = 30000;
+        const demo = document.getElementById("demo-flow");
+        const cursor = document.getElementById("demo-cursor");
+        const statusEl = document.getElementById("demo-status");
+        const totalEl = document.getElementById("demo-total");
+        const leftEl = document.getElementById("demo-left");
+        const cards = Array.from(demo.querySelectorAll("[data-demo-gift]"));
+        const amounts = [0, 0, 0];
+        let playing = false;
+
+        function formatWon(n) {
+          return n.toLocaleString("ko-KR") + "원";
+        }
+
+        function total() {
+          return amounts.reduce((a, b) => a + b, 0);
+        }
+
+        function renderDemo() {
+          const used = total();
+          totalEl.textContent = formatWon(used);
+          leftEl.textContent = formatWon(MAX - used);
+          cards.forEach((card, i) => {
+            card.querySelector("[data-funded]").textContent = formatWon(amounts[i]);
+            card.querySelector("[data-fill]").style.width = Math.min(100, (amounts[i] / MAX) * 100) + "%";
+            const btn = card.querySelector("[data-demo-btn]");
+            btn.disabled = used >= MAX;
+          });
+        }
+
+        function setStatus(html) {
+          statusEl.innerHTML = html;
+        }
+
+        function wait(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        function moveCursorTo(el) {
+          const demoRect = demo.getBoundingClientRect();
+          const rect = el.getBoundingClientRect();
+          const x = rect.left - demoRect.left + rect.width / 2;
+          const y = rect.top - demoRect.top + rect.height / 2;
+          cursor.style.left = x + "px";
+          cursor.style.top = y + "px";
+          cursor.classList.add("is-visible");
+        }
+
+        async function clickButton(btn, card) {
+          cards.forEach((c) => c.classList.remove("is-active"));
+          card.classList.add("is-active");
+          moveCursorTo(btn);
+          await wait(500);
+          cursor.classList.add("is-click");
+          btn.classList.add("is-pressed");
+          await wait(180);
+          cursor.classList.remove("is-click");
+          btn.classList.remove("is-pressed");
+        }
+
+        async function playLoop() {
+          if (playing) return;
+          playing = true;
+          while (true) {
+            amounts[0] = 0;
+            amounts[1] = 0;
+            amounts[2] = 0;
+            cards.forEach((c) => c.classList.remove("is-active"));
+            cursor.classList.remove("is-visible", "is-click");
+            renderDemo();
+            setStatus("선물자가 목록을 보고 있어요…");
+            await wait(1200);
+
+            const steps = [
+              { index: 0, text: "플스6에 <strong>+1만원</strong> 후원!" },
+              { index: 1, text: "닌텐도스위치에 <strong>+1만원</strong> 후원!" },
+              { index: 2, text: "롤링스 야구글러브에 <strong>+1만원</strong> 후원!" },
+            ];
+
+            for (const step of steps) {
+              const card = cards[step.index];
+              const btn = card.querySelector("[data-demo-btn]");
+              setStatus("선물하기 버튼을 눌러요…");
+              await clickButton(btn, card);
+              if (total() + UNIT <= MAX) {
+                amounts[step.index] += UNIT;
+                renderDemo();
+                setStatus(step.text);
+              }
+              await wait(1100);
+            }
+
+            setStatus("한도 도달! 선물자는 <strong>최대 3만원</strong>까지만 후원할 수 있어요.");
+            await wait(2200);
+          }
+        }
+
+        cards.forEach((card, index) => {
+          const btn = card.querySelector("[data-demo-btn]");
+          btn.addEventListener("click", () => {
+            if (total() + UNIT > MAX) {
+              setStatus("이미 <strong>최대 3만원</strong>까지 후원했어요.");
+              return;
+            }
+            amounts[index] += UNIT;
+            cards.forEach((c) => c.classList.remove("is-active"));
+            card.classList.add("is-active");
+            renderDemo();
+            setStatus("직접 눌러봤어요! 합계 <strong>" + formatWon(total()) + "</strong>");
+          });
+        });
+
+        renderDemo();
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          playLoop();
+        } else {
+          setStatus("버튼을 눌러 최대 3만원까지 후원해 보세요.");
+        }
+      })();
     })();
   </script>
 </body>
